@@ -1,12 +1,6 @@
-#include <Arduino.h>
-#include <SPI.h>
 #include <Wire.h>
-#include "WiFi.h"
-
-const char *ssid = "Jhelum.net [Luqman House]";
-const char *password = "7861234786";
-
-WiFiServer server(80);
+#include <Arduino.h>
+#include "AS5600.h"
 
 // Define pin connections & motor's states
 #define ml_1 27
@@ -26,11 +20,27 @@ WiFiServer server(80);
 // Resolution for LEDC function
 #define resolution 8
 
-// Define a variable to hold the current speed
-int currentSpeed = 0; // Initial speed (adjust as needed)
+// Define I2C address for AS5600 encoder
+const int AS5600_ADDRESS_LEFT = 0x36;
+const int AS5600_ADDRESS_RIGHT = 0x37; // Use a different address for the second encoder
 
-void setup()
-{
+// Variables for left-side encoder readings
+int previousEncoderValueLeft = 0;
+int currentEncoderValueLeft = 0;
+
+// Variables for right-side encoder readings
+int previousEncoderValueRight = 0;
+int currentEncoderValueRight = 0;
+
+unsigned long previousTime = 0;
+
+// Define wheel properties
+const float WHEEL_DIAMETER = 10.0; // in cm
+const float ENCODER_RESOLUTION = 4096.0; // 12-bit resolution
+//const float PI = 3.14159;
+
+
+void setup() {
   // Set the motor control pins to outputs
   pinMode(ml_1, OUTPUT);
   pinMode(ml_2, OUTPUT);
@@ -51,162 +61,105 @@ void setup()
   Serial.begin(115200);
   Serial.println("Motors Starting");
 
-  WiFi.begin(ssid, password);
+  // Use GPIO 4 as SDA and GPIO 5 as SCL for the first encoder
+  Wire.begin(4, 5);
+  Serial.begin(115200);
+  Serial.println("Encoder Speed Calculation");
 
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.println("Connecting to WiFi..");
-  }
-
-  Serial.println("Connected to the WiFi network");
-
-  // Start the server
-  server.begin();
-  Serial.print("Server started on IP: ");
-  Serial.println(WiFi.localIP());
 }
 
-// Function to set the motors to move forward
-void moveForward(int speed)
-{
-  // Ramp from 0 to the desired speed forward
-  for (int i = 0; i <= speed; i++)
-  {
-    ledcWrite(channel_l1, speed);
-    ledcWrite(channel_r1, speed);
-    ledcWrite(channel_l2, i);
-    ledcWrite(channel_r2, i);
+void loop() {
+  // Full speed forward for 3 seconds
+  Serial.println("Motors FORWARD");
+
+    ledcWrite(channel_l1, 150);
     delay(20);
+
+  // Read the current encoder value for the left encoder (GPIO 4 and GPIO 5)
+  currentEncoderValueLeft = readEncoderLeft();
+
+  // Delay to give some time before reading the second encoder
+  delay(10);
+
+  // Read the current encoder value for the right encoder (GPIO 21 and GPIO 22)
+  currentEncoderValueRight = readEncoderRight();
+
+
+  // Calculate the time elapsed since the last reading
+  unsigned long currentTime = millis();
+  unsigned long deltaTime = currentTime - previousTime;
+
+  // Calculate the change in encoder angles for left and right encoders
+  int deltaEncoderValueLeft = currentEncoderValueLeft - previousEncoderValueLeft;
+  int deltaEncoderValueRight = currentEncoderValueRight - previousEncoderValueRight;
+
+  // Calculate wheel rotation angles in degrees for left and right encoders
+  float wheelRotationAngleLeft = (deltaEncoderValueLeft / ENCODER_RESOLUTION) * 360.0;
+  float wheelRotationAngleRight = (deltaEncoderValueRight / ENCODER_RESOLUTION) * 360.0;
+
+  // Calculate wheel speeds in RPM for left and right encoders
+  float wheelSpeedRPMLeft = (wheelRotationAngleLeft / deltaTime) * (60000.0 / 360.0);
+  float wheelSpeedRPMRight = (wheelRotationAngleRight / deltaTime) * (60000.0 / 360.0);
+
+  // Print the calculated speeds
+  Serial.print("Left Wheel Speed: ");
+  Serial.print(wheelSpeedRPMLeft);
+  Serial.println(" RPM");
+
+  Serial.print("Right Wheel Speed: ");
+  Serial.print(wheelSpeedRPMRight);
+  Serial.println(" RPM");
+
+  // Add your comparison logic here to determine the robot's movement direction
+  // For example:
+  if (wheelSpeedRPMLeft > wheelSpeedRPMRight) {
+    // The robot turned right
+    Serial.println("Robot turned right");
+  } else if (wheelSpeedRPMLeft < wheelSpeedRPMRight) {
+    // The robot turned left
+    Serial.println("Robot turned left");
+  } else {
+    // The robot is moving straight
+    Serial.println("Robot is moving straight");
   }
+
+  // Update previous values for the next iteration
+  previousEncoderValueLeft = currentEncoderValueLeft;
+  previousEncoderValueRight = currentEncoderValueRight;
+  previousTime = currentTime;
+
+  // Add a delay to control the update frequency (adjust as needed)
+  delay(10);
 }
 
-// Function to set the motors to move backward
-void moveBackward(int speed)
-{
-  // Ramp from 0 to the desired speed backward
-  for (int i = 0; i <= speed; i++)
-  {
-    ledcWrite(channel_l1, i);
-    ledcWrite(channel_r1, i);
-    ledcWrite(channel_l2, speed);
-    ledcWrite(channel_r2, speed);
-    delay(20);
+// Function to read the encoder value from the left AS5600 encoder
+int readEncoderLeft() {
+  Wire.beginTransmission(AS5600_ADDRESS_LEFT);
+  Wire.write(0x0E); // Register address for angle value
+  Wire.endTransmission();
+
+  Wire.requestFrom(AS5600_ADDRESS_LEFT, 2);
+  if (Wire.available() >= 2) {
+    int angleValueLeft = (Wire.read() << 8) | Wire.read();
+    Serial.print("Left Encoder Angle Value: ");
+    Serial.println(angleValueLeft);
+    return angleValueLeft;
   }
+  return 0;
 }
 
-// Function to set the motors to turn right
-void turnRight(int speed)
-{
-  ledcWrite(channel_l1, speed);
-  ledcWrite(channel_r1, speed);
-  ledcWrite(channel_l2, 0);
-  ledcWrite(channel_r2, 0);
-}
+// Function to read the encoder value from the right AS5600 encoder
+int readEncoderRight() {
+  Wire.beginTransmission(AS5600_ADDRESS_RIGHT);
+  Wire.write(0x0E); // Register address for angle value
+  Wire.endTransmission();
 
-// Function to set the motors to turn left
-void turnLeft(int speed)
-{
-  ledcWrite(channel_l1, 0);
-  ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, speed);
-  ledcWrite(channel_r2, speed);
-}
-
-// Function to stop the motors
-void stopMotors()
-{
-  ledcWrite(channel_l1, 0);
-  ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, 0);
-  ledcWrite(channel_r2, 0);
-}
-
-// Function to update the motor speed
-void updateMotorSpeed(int speed)
-{
-  ledcWrite(channel_l1, speed);
-  ledcWrite(channel_r1, speed);
-}
-
-// Function to speed up the motors by 30 RPM
-void speedUp()
-{
-  currentSpeed += 30;
-  if (currentSpeed > 255)
-  {
-    currentSpeed = 255; // Limit the speed to the maximum value (255)
+  Wire.requestFrom(AS5600_ADDRESS_RIGHT, 2);
+  if (Wire.available() >= 2) {
+    int angleValueRight = (Wire.read() << 8) | Wire.read();
+    Serial.print("Right Encoder Angle Value: ");
+    Serial.println(angleValueRight);
+    return angleValueRight;
   }
-  updateMotorSpeed(currentSpeed);
-}
-
-// Function to speed down the motors by 30 RPM
-void speedDown()
-{
-  currentSpeed -= 30;
-  if (currentSpeed < 0)
-  {
-    currentSpeed = 0; // Limit the speed to the minimum value (0)
-  }
-  updateMotorSpeed(currentSpeed);
-}
-
-void processData(String data)
-{
-  // Convert the received data to lowercase for case-insensitive comparison
-  data.toLowerCase();
-
-  // Process the received data and call the appropriate functions
-  if (data == "forward")
-  {
-    moveForward(currentSpeed); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "backward")
-  {
-    moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "right")
-  {
-    turnRight(currentSpeed); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "left")
-  {
-    turnLeft(currentSpeed); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "stop")
-  {
-    stopMotors();
-  }
-  else if (data == "speedup")
-  {
-    speedUp();
-  }
-  else if (data == "speeddown")
-  {
-    speedDown();
-  }
-}
-
-void loop()
-{
-  // Handle client connections
-  WiFiClient client = server.available();
-  if (client)
-  {
-    while (client.connected())
-    {
-      if (client.available())
-      {
-        String data = client.readStringUntil('\n');
-        // Process the received data
-        processData(data);
-        // Send a response (optional)
-        client.println("Data received successfully!");
-      }
-    }
-    // Close the connection
-    client.stop();
-  }
-
-  delay(3000);
+  return 0;
 }
