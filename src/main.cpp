@@ -1,4 +1,12 @@
 #include <Arduino.h>
+#include <SPI.h>
+#include <Wire.h>
+#include "WiFi.h"
+ 
+const char* ssid = "Jhelum.net [Luqman House]";
+const char* password =  "7861234786";
+
+WiFiServer server(80);
 
 // Define pin connections & motor's states
 #define ml_1 27
@@ -38,10 +46,25 @@ void setup() {
   ledcAttachPin(mr_2, channel_r2);
   Serial.begin(115200);
   Serial.println("Motors Starting");
+ 
+  WiFi.begin(ssid, password);
+ 
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.println("Connecting to WiFi..");
+  }
+ 
+  Serial.println("Connected to the WiFi network");
+
+  // Start the server
+  server.begin();
+  Serial.print("Server started on IP: ");
+  Serial.println(WiFi.localIP());
 
 }
 
 void loop() {
+  /*
   // Full speed forward for 3 seconds
   Serial.println("Motors FORWARD");
   // Ramp from 0 to 100% speed forward
@@ -64,6 +87,7 @@ void loop() {
     ledcWrite(channel_r2, 255);
     delay(20);
   }
+  */
 
   delay(3000);
 }
