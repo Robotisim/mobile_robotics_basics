@@ -2,11 +2,16 @@
 #include <SPI.h>
 #include <Wire.h>
 #include "WiFi.h"
+#include <WiFiClient.h>
+#include <WebServer.h>
+#include <ESPmDNS.h>
 
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
 
-WiFiServer server(80);
+WiFiServer wifiServer(80); // Renamed WiFiServer instance to wifiServer
+WebServer webServer(80);   // Renamed WebServer instance to webServer
+String webpage = "";
 
 // Define pin connections & motor's states
 #define ml_1 27
@@ -29,25 +34,26 @@ WiFiServer server(80);
 // Define a variable to hold the current speed
 int currentSpeed = 0; // Initial speed (adjust as needed)
 
+
+
 void setup()
 {
-  // Set the motor control pins to outputs
+  // Motor control setup
   pinMode(ml_1, OUTPUT);
   pinMode(ml_2, OUTPUT);
   pinMode(mr_1, OUTPUT);
   pinMode(mr_2, OUTPUT);
 
-  // Setup LEDC
   ledcSetup(channel_l1, freq, resolution);
   ledcSetup(channel_l2, freq, resolution);
   ledcSetup(channel_r1, freq, resolution);
   ledcSetup(channel_r2, freq, resolution);
 
-  // Attach the channels to the GPIOs
   ledcAttachPin(ml_1, channel_l1);
   ledcAttachPin(ml_2, channel_l2);
   ledcAttachPin(mr_1, channel_r1);
   ledcAttachPin(mr_2, channel_r2);
+
   Serial.begin(115200);
   Serial.println("Motors Starting");
 
@@ -62,9 +68,24 @@ void setup()
   Serial.println("Connected to the WiFi network");
 
   // Start the server
-  server.begin();
+  wifiServer.begin();
   Serial.print("Server started on IP: ");
   Serial.println(WiFi.localIP());
+
+  // Start the web server
+  webServer.begin();
+  Serial.print("Web server started on IP: ");
+  Serial.println(WiFi.localIP());
+
+  // Web server setup
+  webpage += "<h1>Robot Control</h1>";
+  webpage += "<p><a href=\"/forward\"><button>Forward</button></a></p>";
+  webpage += "<p><a href=\"/backward\"><button>Backward</button></a></p>";
+  webpage += "<p><a href=\"/left\"><button>Left</button></a></p>";
+  webpage += "<p><a href=\"/right\"><button>Right</button></a></p>";
+  webpage += "<p><a href=\"/stop\"><button>Stop</button></a></p>";
+  webpage += "<p><a href=\"/speedup\"><button>Speed Up</button></a></p>";
+  webpage += "<p><a href=\"/speeddown\"><button>Speed Down</button></a></p>";
 }
 
 // Function to set the motors to move forward
@@ -189,8 +210,8 @@ void processData(String data)
 
 void loop()
 {
-  // Handle client connections
-  WiFiClient client = server.available();
+  // Handle client connections for WiFi server
+  WiFiClient client = wifiServer.available();
   if (client)
   {
     while (client.connected())
@@ -207,6 +228,9 @@ void loop()
     // Close the connection
     client.stop();
   }
+
+  // Handle client connections for Web server
+  webServer.handleClient();
 
   delay(3000);
 }
