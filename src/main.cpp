@@ -2,9 +2,9 @@
 #include <SPI.h>
 #include <Wire.h>
 #include "WiFi.h"
- 
-const char* ssid = "Jhelum.net [Luqman House]";
-const char* password =  "7861234786";
+
+const char *ssid = "Jhelum.net [Luqman House]";
+const char *password = "7861234786";
 
 WiFiServer server(80);
 
@@ -26,7 +26,11 @@ WiFiServer server(80);
 // Resolution for LEDC function
 #define resolution 8
 
-void setup() {
+// Define a variable to hold the current speed
+int currentSpeed = 0; // Initial speed (adjust as needed)
+
+void setup()
+{
   // Set the motor control pins to outputs
   pinMode(ml_1, OUTPUT);
   pinMode(ml_2, OUTPUT);
@@ -46,48 +50,163 @@ void setup() {
   ledcAttachPin(mr_2, channel_r2);
   Serial.begin(115200);
   Serial.println("Motors Starting");
- 
+
   WiFi.begin(ssid, password);
- 
-  while (WiFi.status() != WL_CONNECTED) {
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
     Serial.println("Connecting to WiFi..");
   }
- 
+
   Serial.println("Connected to the WiFi network");
 
   // Start the server
   server.begin();
   Serial.print("Server started on IP: ");
   Serial.println(WiFi.localIP());
-
 }
 
-void loop() {
-  /*
-  // Full speed forward for 3 seconds
-  Serial.println("Motors FORWARD");
-  // Ramp from 0 to 100% speed forward
-  for (int i = 0; i <= 255; i++) {
-    ledcWrite(channel_l1, 255);
-    ledcWrite(channel_r1, 255);
+// Function to set the motors to move forward
+void moveForward(int speed)
+{
+  // Ramp from 0 to the desired speed forward
+  for (int i = 0; i <= speed; i++)
+  {
+    ledcWrite(channel_l1, speed);
+    ledcWrite(channel_r1, speed);
     ledcWrite(channel_l2, i);
     ledcWrite(channel_r2, i);
     delay(20);
   }
+}
 
-  delay(3000);
-
-  // Ramp from 100% to 0% speed backward
-  Serial.println("Motors Reverse");
-  for (int i = 255; i >= 0; i--) {
+// Function to set the motors to move backward
+void moveBackward(int speed)
+{
+  // Ramp from 0 to the desired speed backward
+  for (int i = 0; i <= speed; i++)
+  {
     ledcWrite(channel_l1, i);
     ledcWrite(channel_r1, i);
-    ledcWrite(channel_l2, 255);
-    ledcWrite(channel_r2, 255);
+    ledcWrite(channel_l2, speed);
+    ledcWrite(channel_r2, speed);
     delay(20);
   }
-  */
+}
+
+// Function to set the motors to turn right
+void turnRight(int speed)
+{
+  ledcWrite(channel_l1, speed);
+  ledcWrite(channel_r1, speed);
+  ledcWrite(channel_l2, 0);
+  ledcWrite(channel_r2, 0);
+}
+
+// Function to set the motors to turn left
+void turnLeft(int speed)
+{
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_l2, speed);
+  ledcWrite(channel_r2, speed);
+}
+
+// Function to stop the motors
+void stopMotors()
+{
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_l2, 0);
+  ledcWrite(channel_r2, 0);
+}
+
+// Function to update the motor speed
+void updateMotorSpeed(int speed)
+{
+  ledcWrite(channel_l1, speed);
+  ledcWrite(channel_r1, speed);
+}
+
+// Function to speed up the motors by 30 RPM
+void speedUp()
+{
+  currentSpeed += 30;
+  if (currentSpeed > 255)
+  {
+    currentSpeed = 255; // Limit the speed to the maximum value (255)
+  }
+  updateMotorSpeed(currentSpeed);
+}
+
+// Function to speed down the motors by 30 RPM
+void speedDown()
+{
+  currentSpeed -= 30;
+  if (currentSpeed < 0)
+  {
+    currentSpeed = 0; // Limit the speed to the minimum value (0)
+  }
+  updateMotorSpeed(currentSpeed);
+}
+
+void processData(String data)
+{
+  // Convert the received data to lowercase for case-insensitive comparison
+  data.toLowerCase();
+
+  // Process the received data and call the appropriate functions
+  if (data == "forward")
+  {
+    moveForward(currentSpeed); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "backward")
+  {
+    moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "right")
+  {
+    turnRight(currentSpeed); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "left")
+  {
+    turnLeft(currentSpeed); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "stop")
+  {
+    stopMotors();
+  }
+  else if (data == "speedup")
+  {
+    speedUp();
+  }
+  else if (data == "speeddown")
+  {
+    speedDown();
+  }
+}
+
+void loop()
+{
+  // Handle client connections
+  WiFiClient client = server.available();
+  if (client)
+  {
+    while (client.connected())
+    {
+      if (client.available())
+      {
+        String data = client.readStringUntil('\n');
+        // Process the received data
+        processData(data);
+        // Send a response (optional)
+        client.println("Data received successfully!");
+      }
+    }
+    // Close the connection
+    client.stop();
+  }
 
   delay(3000);
 }
