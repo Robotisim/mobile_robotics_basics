@@ -1,17 +1,13 @@
-#include <Arduino.h>
+#include <ThingSpeak.h>               // add librery
 #include <SPI.h>
 #include <Wire.h>
 #include "WiFi.h"
-#include <WiFiClient.h>
-#include <WebServer.h>
-#include <ESPmDNS.h>
 
+
+
+WiFiClient  client;
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
-
-WiFiServer wifiServer(80); // Renamed WiFiServer instance to wifiServer
-WebServer webServer(80);   // Renamed WebServer instance to webServer
-String webpage = "";
 
 // Define pin connections & motor's states
 #define ml_1 27
@@ -27,33 +23,44 @@ String webpage = "";
 
 // Frequency for LEDC function
 #define freq 5000
-
+WiFiServer server(80);
 // Resolution for LEDC function
 #define resolution 8
-
 // Define a variable to hold the current speed
 int currentSpeed = 0; // Initial speed (adjust as needed)
 
+// Function to handle the received data
+void handleData(String data)
+{
+  Serial.println("Received data: " + data);
+  // Process the received data here if needed
+}
 
+
+unsigned long counterChannelNumber = 2226178;                // Channel ID
+const char * myCounterReadAPIKey = "GUJ9A5KJBXXN9CUE";      // Read API Key
+const int FieldNumber1 = 1;                                 // The field you wish to read
 
 void setup()
 {
-  // Motor control setup
+
+  // Set the motor control pins to outputs
   pinMode(ml_1, OUTPUT);
   pinMode(ml_2, OUTPUT);
   pinMode(mr_1, OUTPUT);
   pinMode(mr_2, OUTPUT);
 
+  // Setup LEDC
   ledcSetup(channel_l1, freq, resolution);
   ledcSetup(channel_l2, freq, resolution);
   ledcSetup(channel_r1, freq, resolution);
   ledcSetup(channel_r2, freq, resolution);
 
+  // Attach the channels to the GPIOs
   ledcAttachPin(ml_1, channel_l1);
   ledcAttachPin(ml_2, channel_l2);
   ledcAttachPin(mr_1, channel_r1);
   ledcAttachPin(mr_2, channel_r2);
-
   Serial.begin(115200);
   Serial.println("Motors Starting");
 
@@ -64,29 +71,15 @@ void setup()
     delay(500);
     Serial.println("Connecting to WiFi..");
   }
-
   Serial.println("Connected to the WiFi network");
 
   // Start the server
-  wifiServer.begin();
+  server.begin();
   Serial.print("Server started on IP: ");
   Serial.println(WiFi.localIP());
-
-  // Start the web server
-  webServer.begin();
-  Serial.print("Web server started on IP: ");
-  Serial.println(WiFi.localIP());
-
-  // Web server setup
-  webpage += "<h1>Robot Control</h1>";
-  webpage += "<p><a href=\"/forward\"><button>Forward</button></a></p>";
-  webpage += "<p><a href=\"/backward\"><button>Backward</button></a></p>";
-  webpage += "<p><a href=\"/left\"><button>Left</button></a></p>";
-  webpage += "<p><a href=\"/right\"><button>Right</button></a></p>";
-  webpage += "<p><a href=\"/stop\"><button>Stop</button></a></p>";
-  webpage += "<p><a href=\"/speedup\"><button>Speed Up</button></a></p>";
-  webpage += "<p><a href=\"/speeddown\"><button>Speed Down</button></a></p>";
+  ThingSpeak.begin(client);
 }
+
 
 // Function to set the motors to move forward
 void moveForward(int speed)
@@ -101,7 +94,6 @@ void moveForward(int speed)
     delay(20);
   }
 }
-
 // Function to set the motors to move backward
 void moveBackward(int speed)
 {
@@ -114,7 +106,7 @@ void moveBackward(int speed)
     ledcWrite(channel_r2, speed);
     delay(20);
   }
-}
+  }
 
 // Function to set the motors to turn right
 void turnRight(int speed)
@@ -198,39 +190,23 @@ void processData(String data)
   {
     stopMotors();
   }
-  else if (data == "speedup")
+  else if (data == "up")
   {
     speedUp();
   }
-  else if (data == "speeddown")
+  else if (data == "down")
   {
     speedDown();
   }
 }
 
-void loop()
+
+void loop() 
 {
-  // Handle client connections for WiFi server
-  WiFiClient client = wifiServer.available();
-  if (client)
-  {
-    while (client.connected())
-    {
-      if (client.available())
-      {
-        String data = client.readStringUntil('\n');
-        // Process the received data
-        processData(data);
-        // Send a response (optional)
-        client.println("Data received successfully!");
-      }
-    }
-    // Close the connection
-    client.stop();
-  }
+ String data = ThingSpeak.readStringField(counterChannelNumber, FieldNumber1, myCounterReadAPIKey);
+ processData(data);
+ handleData(data);
+ delay(100);
 
-  // Handle client connections for Web server
-  webServer.handleClient();
+ }
 
-  delay(3000);
-}
