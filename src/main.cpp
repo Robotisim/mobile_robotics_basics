@@ -1,13 +1,12 @@
-#include <ThingSpeak.h>               // add librery
+#include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
 #include "WiFi.h"
 
-
-
-WiFiClient  client;
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
+
+WiFiServer server(80);
 
 // Define pin connections & motor's states
 #define ml_1 27
@@ -23,27 +22,15 @@ const char *password = "7861234786";
 
 // Frequency for LEDC function
 #define freq 5000
-WiFiServer server(80);
+
 // Resolution for LEDC function
 #define resolution 8
+
 // Define a variable to hold the current speed
 int currentSpeed = 0; // Initial speed (adjust as needed)
 
-// Function to handle the received data
-void handleData(String data)
-{
-  Serial.println("Received data: " + data);
-  // Process the received data here if needed
-}
-
-
-unsigned long counterChannelNumber = 2226178;                // Channel ID
-const char * myCounterReadAPIKey = "GUJ9A5KJBXXN9CUE";      // Read API Key
-const int FieldNumber1 = 1;                                 // The field you wish to read
-
 void setup()
 {
-
   // Set the motor control pins to outputs
   pinMode(ml_1, OUTPUT);
   pinMode(ml_2, OUTPUT);
@@ -71,14 +58,21 @@ void setup()
     delay(500);
     Serial.println("Connecting to WiFi..");
   }
+
   Serial.println("Connected to the WiFi network");
 
   // Start the server
   server.begin();
   Serial.print("Server started on IP: ");
   Serial.println(WiFi.localIP());
-  ThingSpeak.begin(client);
 }
+// Function to handle the received data
+void handleData(String data)
+{
+  Serial.println("Received data: " + data);
+  // Process the received data here if needed
+}
+
 
 
 // Function to set the motors to move forward
@@ -94,6 +88,7 @@ void moveForward(int speed)
     delay(20);
   }
 }
+
 // Function to set the motors to move backward
 void moveBackward(int speed)
 {
@@ -106,7 +101,7 @@ void moveBackward(int speed)
     ledcWrite(channel_r2, speed);
     delay(20);
   }
-  }
+}
 
 // Function to set the motors to turn right
 void turnRight(int speed)
@@ -200,13 +195,26 @@ void processData(String data)
   }
 }
 
-
-void loop() 
+void loop()
 {
- String data = ThingSpeak.readStringField(counterChannelNumber, FieldNumber1, myCounterReadAPIKey);
- processData(data);
- handleData(data);
- delay(100);
+  // Handle client connections
+  WiFiClient client = server.available();
+  if (client)
+  {
+    while (client.connected())
+    {
+      if (client.available())
+      {
+        String data = client.readStringUntil('\n');
+        // Process the received data
+        processData(data);
+        handleData(data);
+        client.println("Data received successfully!");
+      }
+    }
+    // Close the connection
+    client.stop();
+  }
 
- }
-
+  delay(3000);
+}
