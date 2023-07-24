@@ -29,6 +29,9 @@ WiFiServer server(80);
 // Define a variable to hold the current speed
 int currentSpeed = 0; // Initial speed (adjust as needed)
 
+String  data = ""; 
+WiFiClient client;
+
 void setup()
 {
   // Set the motor control pins to outputs
@@ -78,37 +81,31 @@ void handleData(String data)
 // Function to set the motors to move forward
 void moveForward(int speed)
 {
-  // Ramp from 0 to the desired speed forward
-  for (int i = 0; i <= speed; i++)
-  {
     ledcWrite(channel_l1, speed);
     ledcWrite(channel_r1, speed);
-    ledcWrite(channel_l2, i);
-    ledcWrite(channel_r2, i);
+    ledcWrite(channel_l2, speed);
+    ledcWrite(channel_r2, speed);
     delay(20);
-  }
+  
 }
 
 // Function to set the motors to move backward
 void moveBackward(int speed)
 {
-  // Ramp from 0 to the desired speed backward
-  for (int i = 0; i <= speed; i++)
-  {
-    ledcWrite(channel_l1, i);
-    ledcWrite(channel_r1, i);
+
+    ledcWrite(channel_l1, speed);
+    ledcWrite(channel_r1, speed);
     ledcWrite(channel_l2, speed);
     ledcWrite(channel_r2, speed);
     delay(20);
-  }
 }
 
 // Function to set the motors to turn right
 void turnRight(int speed)
 {
   ledcWrite(channel_l1, speed);
-  ledcWrite(channel_r1, speed);
-  ledcWrite(channel_l2, 0);
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_l2, speed);
   ledcWrite(channel_r2, 0);
 }
 
@@ -116,8 +113,8 @@ void turnRight(int speed)
 void turnLeft(int speed)
 {
   ledcWrite(channel_l1, 0);
-  ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, speed);
+  ledcWrite(channel_r1, speed);
+  ledcWrite(channel_l2, 0);
   ledcWrite(channel_r2, speed);
 }
 
@@ -135,6 +132,8 @@ void updateMotorSpeed(int speed)
 {
   ledcWrite(channel_l1, speed);
   ledcWrite(channel_r1, speed);
+  ledcWrite(channel_l2, speed);
+  ledcWrite(channel_r2, speed);
 }
 
 // Function to speed up the motors by 30 RPM
@@ -195,26 +194,29 @@ void processData(String data)
   }
 }
 
+String checkClient (void)
+
+{
+
+  while(!client.available()) delay(1); 
+
+  String request = client.readStringUntil('\r');
+  request.remove(0, 5);
+  request.remove(request.length()-9,9);
+
+  return request;
+
+}
+
 void loop()
 {
   // Handle client connections
-  WiFiClient client = server.available();
-  if (client)
-  {
-    while (client.connected())
-    {
-      if (client.available())
-      {
-        String data = client.readStringUntil('\n');
-        // Process the received data
-        processData(data);
-        handleData(data);
-        client.println("Data received successfully!");
-      }
-    }
-    // Close the connection
-    client.stop();
-  }
+  client = server.available();
+  if (!client) return;
 
-  delay(3000);
+  data = checkClient();
+   // Process the received data
+  processData(data);
+  handleData(data);
+
 }
