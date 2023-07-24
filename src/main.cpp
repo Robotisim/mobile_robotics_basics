@@ -1,8 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <Wire.h>
-#include <WiFi.h>
-#include <U8g2lib.h> // Include the U8g2 library
+#include "WiFi.h"
 
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
@@ -32,9 +31,6 @@ int currentSpeed = 0; // Initial speed (adjust as needed)
 
 String data = "";
 WiFiClient client;
-
-// OLED display object
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 void setup()
 {
@@ -73,30 +69,7 @@ void setup()
   server.begin();
   Serial.print("Server started on IP: ");
   Serial.println(WiFi.localIP());
-
-  // Initialize the OLED display
-  u8g2.begin();
-  u8g2.enableUTF8Print(); // Enable UTF-8 character printing
-
-  // Display a startup message on the OLED display
-  u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_6x10_tf); // Choose a font
-  u8g2.setCursor(0, 15);
-  u8g2.print("Motors Starting...");
-  u8g2.sendBuffer();
 }
-
-// Function to display the current command on the OLED display
-void displayCommandOnOLED(String command)
-{
-  u8g2.clearBuffer(); // Clear the display buffer
-  u8g2.setFont(u8g2_font_6x10_tf); // Choose a font
-  u8g2.setCursor(0, 15); // Set cursor position
-  u8g2.print("Command: "); // Display text
-  u8g2.print(command); // Display the current command
-  u8g2.sendBuffer(); // Send the buffer to the OLED display
-}
-
 // Function to handle the received data
 void handleData(String data)
 {
@@ -107,8 +80,8 @@ void handleData(String data)
 // Function to set the motors to move forward
 void moveForward(int speed)
 {
-  ledcWrite(channel_l1, speed);
-  ledcWrite(channel_r1, speed);
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_r1, 0);
   ledcWrite(channel_l2, speed);
   ledcWrite(channel_r2, speed);
   delay(20);
@@ -119,27 +92,27 @@ void moveBackward(int speed)
 {
   ledcWrite(channel_l1, speed);
   ledcWrite(channel_r1, speed);
-  ledcWrite(channel_l2, speed);
-  ledcWrite(channel_r2, speed);
+  ledcWrite(channel_l2, 0);
+  ledcWrite(channel_r2, 0);
   delay(20);
 }
 
 // Function to set the motors to turn right
-void turnRight(int speed)
+void turnRight()
 {
-  ledcWrite(channel_l1, speed);
+  ledcWrite(channel_l1, 0);
   ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, speed);
+  ledcWrite(channel_l2, 255);
   ledcWrite(channel_r2, 0);
 }
 
 // Function to set the motors to turn left
-void turnLeft(int speed)
+void turnLeft()
 {
   ledcWrite(channel_l1, 0);
-  ledcWrite(channel_r1, speed);
+  ledcWrite(channel_r1, 0);
   ledcWrite(channel_l2, 0);
-  ledcWrite(channel_r2, speed);
+  ledcWrite(channel_r2, 255);
 }
 
 // Function to stop the motors
@@ -151,44 +124,51 @@ void stopMotors()
   ledcWrite(channel_r2, 0);
 }
 
-// Function to update the motor speed
-void updateMotorSpeed(int speed)
-{
-  ledcWrite(channel_l1, speed);
-  ledcWrite(channel_r1, speed);
-  ledcWrite(channel_l2, speed);
-  ledcWrite(channel_r2, speed);
-}
-
 // Function to speed up the motors by 30 RPM
 void speedUp()
 {
+
   currentSpeed += 30;
   if (currentSpeed > 255)
   {
     currentSpeed = 255; // Limit the speed to the maximum value (255)
+    if (data == "forward")
+    {
+      moveForward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "backward")
+    {
+      moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
   }
-  updateMotorSpeed(currentSpeed);
+
 }
 
 // Function to speed down the motors by 30 RPM
 void speedDown()
 {
+  
+
   currentSpeed -= 30;
   if (currentSpeed < 0)
   {
     currentSpeed = 0; // Limit the speed to the minimum value (0)
+    if (data == "forward")
+    {
+      moveForward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "backward")
+    {
+      moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
   }
-  updateMotorSpeed(currentSpeed);
+  
 }
 
 void processData(String data)
 {
   // Convert the received data to lowercase for case-insensitive comparison
   data.toLowerCase();
-
-  // Display the received command on the OLED display
-  displayCommandOnOLED(data);
 
   // Process the received data and call the appropriate functions
   if (data == "forward")
@@ -201,11 +181,11 @@ void processData(String data)
   }
   else if (data == "right")
   {
-    turnRight(currentSpeed); // Set the speed as needed (0 to 255)
+    turnRight(); // Set the speed as needed (0 to 255)
   }
   else if (data == "left")
   {
-    turnLeft(currentSpeed); // Set the speed as needed (0 to 255)
+    turnLeft(); // Set the speed as needed (0 to 255)
   }
   else if (data == "stop")
   {
@@ -222,7 +202,9 @@ void processData(String data)
 }
 
 String checkClient(void)
+
 {
+
   while (!client.available())
     delay(1);
 
