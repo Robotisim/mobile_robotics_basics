@@ -29,7 +29,7 @@ WiFiServer server(80);
 // Define a variable to hold the current speed
 int currentSpeed = 0; // Initial speed (adjust as needed)
 
-String  data = ""; 
+String data = "";
 WiFiClient client;
 
 void setup()
@@ -51,6 +51,7 @@ void setup()
   ledcAttachPin(ml_2, channel_l2);
   ledcAttachPin(mr_1, channel_r1);
   ledcAttachPin(mr_2, channel_r2);
+
   Serial.begin(115200);
   Serial.println("Motors Starting");
 
@@ -76,46 +77,42 @@ void handleData(String data)
   // Process the received data here if needed
 }
 
-
-
 // Function to set the motors to move forward
 void moveForward(int speed)
 {
-    ledcWrite(channel_l1, speed);
-    ledcWrite(channel_r1, speed);
-    ledcWrite(channel_l2, speed);
-    ledcWrite(channel_r2, speed);
-    delay(20);
-  
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_l2, speed);
+  ledcWrite(channel_r2, speed);
+  delay(20);
 }
 
 // Function to set the motors to move backward
 void moveBackward(int speed)
 {
-
-    ledcWrite(channel_l1, speed);
-    ledcWrite(channel_r1, speed);
-    ledcWrite(channel_l2, speed);
-    ledcWrite(channel_r2, speed);
-    delay(20);
+  ledcWrite(channel_l1, speed);
+  ledcWrite(channel_r1, speed);
+  ledcWrite(channel_l2, 0);
+  ledcWrite(channel_r2, 0);
+  delay(20);
 }
 
 // Function to set the motors to turn right
-void turnRight(int speed)
+void turnRight()
 {
-  ledcWrite(channel_l1, speed);
+  ledcWrite(channel_l1, 0);
   ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, speed);
+  ledcWrite(channel_l2, 255);
   ledcWrite(channel_r2, 0);
 }
 
 // Function to set the motors to turn left
-void turnLeft(int speed)
+void turnLeft()
 {
   ledcWrite(channel_l1, 0);
-  ledcWrite(channel_r1, speed);
+  ledcWrite(channel_r1, 0);
   ledcWrite(channel_l2, 0);
-  ledcWrite(channel_r2, speed);
+  ledcWrite(channel_r2, 255);
 }
 
 // Function to stop the motors
@@ -127,35 +124,45 @@ void stopMotors()
   ledcWrite(channel_r2, 0);
 }
 
-// Function to update the motor speed
-void updateMotorSpeed(int speed)
-{
-  ledcWrite(channel_l1, speed);
-  ledcWrite(channel_r1, speed);
-  ledcWrite(channel_l2, speed);
-  ledcWrite(channel_r2, speed);
-}
-
 // Function to speed up the motors by 30 RPM
 void speedUp()
 {
+
   currentSpeed += 30;
   if (currentSpeed > 255)
   {
     currentSpeed = 255; // Limit the speed to the maximum value (255)
+    if (data == "forward")
+    {
+      moveForward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "backward")
+    {
+      moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
   }
-  updateMotorSpeed(currentSpeed);
+
 }
 
 // Function to speed down the motors by 30 RPM
 void speedDown()
 {
+  
+
   currentSpeed -= 30;
   if (currentSpeed < 0)
   {
     currentSpeed = 0; // Limit the speed to the minimum value (0)
+    if (data == "forward")
+    {
+      moveForward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "backward")
+    {
+      moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
+    }
   }
-  updateMotorSpeed(currentSpeed);
+  
 }
 
 void processData(String data)
@@ -174,11 +181,11 @@ void processData(String data)
   }
   else if (data == "right")
   {
-    turnRight(currentSpeed); // Set the speed as needed (0 to 255)
+    turnRight(); // Set the speed as needed (0 to 255)
   }
   else if (data == "left")
   {
-    turnLeft(currentSpeed); // Set the speed as needed (0 to 255)
+    turnLeft(); // Set the speed as needed (0 to 255)
   }
   else if (data == "stop")
   {
@@ -194,29 +201,29 @@ void processData(String data)
   }
 }
 
-String checkClient (void)
+String checkClient(void)
 
 {
 
-  while(!client.available()) delay(1); 
+  while (!client.available())
+    delay(1);
 
   String request = client.readStringUntil('\r');
   request.remove(0, 5);
-  request.remove(request.length()-9,9);
+  request.remove(request.length() - 9, 9);
 
   return request;
-
 }
 
 void loop()
 {
   // Handle client connections
   client = server.available();
-  if (!client) return;
+  if (!client)
+    return;
 
   data = checkClient();
-   // Process the received data
+  // Process the received data
   processData(data);
   handleData(data);
-
 }
