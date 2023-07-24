@@ -1,11 +1,5 @@
 #include "motor_control.h"
 
-// Define channels for LEDC functions
-#define channel_l1 0
-#define channel_l2 1
-#define channel_r1 2
-#define channel_r2 3
-
 // Frequency for LEDC function
 #define freq 5000
 
