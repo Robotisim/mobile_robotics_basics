@@ -22,8 +22,7 @@
 #define resolution 8
 
 // Define I2C address for AS5600 encoder
-const int AS5600_ADDRESS_LEFT = 0x36;
-const int AS5600_ADDRESS_RIGHT = 0x37; 
+const int AS5600_ADDRESS = 0x36;
 
 // Variables for left-side encoder readings
 int previousEncoderValueLeft = 0;
@@ -34,6 +33,8 @@ int previousEncoderValueRight = 0;
 int currentEncoderValueRight = 0;
 
 unsigned long previousTime = 0;
+unsigned long startTime = 0;
+unsigned long motorDuration = 10000; // 10 seconds
 
 // Define wheel properties
 const float WHEEL_DIAMETER = 10.0; // in cm
@@ -67,17 +68,21 @@ void setup() {
   Serial.println("Motors Starting");
 
   // Use GPIO 4 as SDA and GPIO 5 as SCL for the first encoder
-  Wire.begin(4, 5);
+  //Wire.begin(4, 5);
+  // Use GPIO 21 as SDA and GPIO 22 as SCL for the second encoder
+  Wire.begin(21, 22);
   Serial.println("Encoder Speed Calculation");
 
+  // Record the start time
+  startTime = millis();
 }
 // Function to read the encoder value from the left AS5600 encoder
 int readEncoderLeft() {
-  Wire.beginTransmission(AS5600_ADDRESS_LEFT);
+  Wire.beginTransmission(AS5600_ADDRESS);
   Wire.write(0x0E); // Register address for angle value
   Wire.endTransmission();
 
-  Wire.requestFrom(AS5600_ADDRESS_LEFT, 2);
+  Wire.requestFrom(AS5600_ADDRESS, 2);
   if (Wire.available() >= 2) {
     int angleValueLeft = (Wire.read() << 8) | Wire.read();
     Serial.print("Left Encoder Angle Value: ");
@@ -89,11 +94,11 @@ int readEncoderLeft() {
 
 // Function to read the encoder value from the right AS5600 encoder
 int readEncoderRight() {
-  Wire.beginTransmission(AS5600_ADDRESS_RIGHT);
+  Wire.beginTransmission(AS5600_ADDRESS);
   Wire.write(0x0E); // Register address for angle value
   Wire.endTransmission();
 
-  Wire.requestFrom(AS5600_ADDRESS_RIGHT, 2);
+  Wire.requestFrom(AS5600_ADDRESS, 2);
   if (Wire.available() >= 2) {
     int angleValueRight = (Wire.read() << 8) | Wire.read();
     Serial.print("Right Encoder Angle Value: ");
@@ -121,14 +126,30 @@ int calculateDeltaAngle(int currentAngle, int previousAngle) {
 
 
 
-void loop() {
-  // Full speed forward for 3 seconds
-  Serial.println("Motors FORWARD");
+
+void stopMotors() {
   ledcWrite(channel_l1, 0);
-  //ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, 180);
-  //ledcWrite(channel_r2, 180);
-  delay(20);
+  ledcWrite(channel_l2, 0);
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_r2, 0);
+}
+
+void loop() {
+  // Check if the motor duration has elapsed
+  unsigned long currentTime = millis();
+  if (currentTime - startTime >= motorDuration) {
+    stopMotors();
+    Serial.println("Motors Stopped");
+    while (true) {
+      // Stay here indefinitely after stopping the motors
+    }
+  }
+
+  // Full speed forward
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_l2, 155);
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_r2, 0);
 
   // Read the current encoder value for the left encoder (GPIO 4 and GPIO 5)
   currentEncoderValueLeft = readEncoderLeft();
@@ -141,7 +162,6 @@ void loop() {
 
 
   // Calculate the time elapsed since the last reading for left and right encoders
-  unsigned long currentTime = millis();
   unsigned long deltaTimeLeft = currentTime - previousTimeLeft;
   unsigned long deltaTimeRight = currentTime - previousTimeRight;
 
@@ -192,8 +212,6 @@ void loop() {
   previousTimeLeft = currentTime;
   previousTimeRight = currentTime;
 
-
   // Add a delay to control the update frequency (adjust as needed)
   delay(10);
 }
-
