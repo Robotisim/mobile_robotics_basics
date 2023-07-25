@@ -1,5 +1,5 @@
 # Driving Robot and Displaying Signals on OLED Display
-- issue #8
-- task: app creation & robot drive
-- achieved : full control and seperate files
-- remaining : -
+- issue #4
+- task: check if encoders provide correct data
+- achieved : -
+- remaining : tests
