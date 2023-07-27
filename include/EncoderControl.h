@@ -1,13 +1,16 @@
 #ifndef ENCODER_CONTROL_H
 #define ENCODER_CONTROL_H
 
-#include <Arduino.h>
+#include <Wire.h>
 
-// Define I2C address for AS5600 encoder
-const int AS5600_ADDRESS = 0x36;
+extern const float WHEEL_DIAMETER; // Declare WHEEL_DIAMETER as an external variable
 
-// Function prototypes
-int readEncoderLeft();
-int calculateDeltaAngle(int currentAngle, int previousAngle);
+void setupEncoder0();
+void setupEncoder1();
+void readEncoderAngle0();
+void readEncoderAngle1();
+void getEncoderSpeed0();
+void getEncoderSpeed1();
 
 #endif // ENCODER_CONTROL_H
+

@@ -26,6 +26,5 @@ void setupMotors();
 void stopMotors();
 void moveForward();
 void moveBackward();
-void setPWM(int pwmValue);
 
 #endif // MOTOR_CONTROL_H

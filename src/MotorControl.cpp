@@ -46,9 +46,3 @@ void moveBackward() {
   ledcWrite(channel_r2, 0);
 }
 
-void setPWM(int pwmValue) {
-  ledcWrite(channel_l1, pwmValue);
-  ledcWrite(channel_r1, pwmValue);
-  ledcWrite(channel_l2, pwmValue);
-  ledcWrite(channel_r2, pwmValue);
-}
