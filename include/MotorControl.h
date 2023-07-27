@@ -24,7 +24,7 @@
 // Function prototypes
 void setupMotors();
 void stopMotors();
-void moveForward();
-void moveBackward();
+void moveForward(int PWM);
+void moveBackward(int PWM);
 
 #endif // MOTOR_CONTROL_H
