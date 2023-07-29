@@ -30,8 +30,8 @@ extern int currentSpeed; // Initial speed (adjust as needed)
 void setupMotors();
 void moveForward(int speed);
 void moveBackward(int speed);
-void turnRight();
-void turnLeft();
+void turnRight(int speed);
+void turnLeft(int speed);
 void stopMotors();
 
 

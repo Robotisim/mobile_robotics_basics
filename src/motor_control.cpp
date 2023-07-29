@@ -41,20 +41,20 @@ void moveBackward(int speed)
   ledcWrite(channel_r2, 0);
 }
 
-void turnRight()
+void turnRight(int speed)
 {
   ledcWrite(channel_l1, 0);
   ledcWrite(channel_r1, 0);
-  ledcWrite(channel_l2, 255);
+  ledcWrite(channel_l2, speed);
   ledcWrite(channel_r2, 0);
 }
 
-void turnLeft()
+void turnLeft(int speed)
 {
   ledcWrite(channel_l1, 0);
   ledcWrite(channel_r1, 0);
   ledcWrite(channel_l2, 0);
-  ledcWrite(channel_r2, 255);
+  ledcWrite(channel_r2, speed);
 }
 
 void stopMotors()
