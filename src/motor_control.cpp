@@ -1,5 +1,5 @@
 #include "motor_control.h"
-
+#include "pi_controller.h"
 
 
 void setupMotors() {
@@ -63,4 +63,31 @@ void stopMotors()
   ledcWrite(channel_r1, 0);
   ledcWrite(channel_l2, 0);
   ledcWrite(channel_r2, 0);
+}
+
+// function to enable the motors of robot
+void start_robot()
+{
+  digitalWrite(ml_1, HIGH); // Forward direction configuration
+  digitalWrite(mr_1, HIGH);
+}
+
+void handle_u_turn()
+{
+// Make left turn until it detects a straight path
+      do
+      {
+        moveBackward(200);
+        delay(200);
+        if (random(0, 2) == 0)
+        {
+          turnLeft(180);
+        }
+        else
+        {
+          turnRight(180);
+        }
+        read_sensor_values();
+
+      } while (error != 0);
 }

@@ -33,6 +33,7 @@ void moveBackward(int speed);
 void turnRight(int speed);
 void turnLeft(int speed);
 void stopMotors();
-
+void start_robot();
+void handle_u_turn();
 
 #endif

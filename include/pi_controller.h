@@ -1,17 +1,18 @@
-#ifndef PI_CONTROLLER_H
-#define PI_CONTROLLER_H
+#ifndef PI_CONTROL_H
+#define PI_CONTROL_H
 
-class PIController {
-public:
-    PIController(float kp, float ki);
-    void setGains(float kp, float ki);
-    float calculateControlSignal(float error);
-    
-private:
-    float Kp;
-    float Ki;
-    float integral;
-    float lastError;
-};
+#include <Arduino.h>
 
-#endif
+// Declare the external variables
+extern int sensor[3];
+extern float error;
+extern int Right_motor_speed;
+extern int Left_motor_speed;
+
+
+// Function declarations
+void read_sensor_values();
+void calculate_pid();
+void motor_control();
+
+#endif // PI_CONTROL_H
