@@ -22,7 +22,7 @@ void setupMotors() {
   ledcAttachPin(mr_2, channel_r2);
 
   Serial.begin(115200);
-  Serial.println("Motors Starting");
+  // Serial.println("Motors Starting");
 }
 
 void moveForward(int speed)

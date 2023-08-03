@@ -8,8 +8,8 @@
 #define ir5 15
 
 // Initial Values of Sensors
-int sensor[3] = {0, 0, 0};
-// int sensor[5] = {0, 0, 0, 0, 0};
+//int sensor[3] = {0, 0, 0};
+ int sensor[5] = {0, 0, 0, 0, 0};
 // Initial Speed of Motor
 int Right_motor_speed = 100; // Motor Base speeds
 int Left_motor_speed = 100;
@@ -25,74 +25,48 @@ float I_limit = 100; // Set an appropriate limit for the integral term
 void read_sensor_values()
 {
 
-  // sensor[0] = !digitalRead(ir1);
-  // sensor[1] = !digitalRead(ir2);
-  // sensor[2] = !digitalRead(ir3);
-  // sensor[3] = !digitalRead(ir4);
-  // sensor[4] = !digitalRead(ir5);
+  sensor[0] = digitalRead(ir1);
+  sensor[1] = digitalRead(ir2);
+  sensor[2] = digitalRead(ir3);
+  sensor[3] = digitalRead(ir4);
+  sensor[4] = digitalRead(ir5);
 
-  sensor[0] = !digitalRead(ir2);
-  sensor[1] = !digitalRead(ir3);
-  sensor[2] = !digitalRead(ir4);
+  // Serial.print(sensor[0]);
+  // Serial.print("\t");
+  // Serial.print(sensor[1]);
+  // Serial.print("\t");
+  // Serial.print(sensor[2]);
+  // Serial.print("\t");
+  // Serial.print(sensor[3]);
+  // Serial.print("\t");
+  // Serial.print(sensor[4]);
+  // Serial.print("\t");
 
-  Serial.print(sensor[0]);
-  Serial.print("\t");
-  Serial.print(sensor[1]);
-  Serial.print("\t");
-  Serial.print(sensor[2]);
-  Serial.print("\t");
-  /*
-    Serial.print(sensor[0]);
-    Serial.print("\t");
-    Serial.print(sensor[1]);
-    Serial.print("\t");
-    Serial.print(sensor[2]);
-    Serial.print("\t");
-    Serial.println(sensor[3]);
-    Serial.print("\t");
-    Serial.println(sensor[4]);
-    */
-  //   if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
-  //     error = 3;
-  //   else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
-  //     error = 2;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
-  //     error = 1;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 0))
-  //     error = 0;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 0))
-  //     error = -1;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))
-  //     error = -2;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 1))
-  //     error = -3;
-  //   else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0)) // Turn robot left side
-  //     error = 100;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1)) // Turn robot right side
-  //     error = 101;
-  //   else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0)) // Make U turn
-  //     error = 102;
-  //   else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1)) // Turn left side or stop
-  //     error = 103;
-  // }
-
-  if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0))
-    error = 1;
-  else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 0))
-    error = 0;
-  else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 1))
-    error = -1;
-  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0)) // Turn robot left side
-    error = 2;
-  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1)) // Turn robot right side
-    error = -2;
-  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0)) // Make U turn
-    error = 102;
-  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1)) // Turn left side or stop
-    error = 0;
-  else
-    error = 103; // 101
-}
+    if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
+      error = 4;
+    else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
+      error = 3;
+    else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
+      error = 2;
+    else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 0))
+      error = 1;
+    else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 0))
+      error = 0;
+    else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 0))
+      error = -1;
+    else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 0))
+      error = -2;
+    else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))
+      error = -3;
+    else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 1))
+      error = -4;
+    else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0)) // Make U turn
+      error = 102;
+    else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1)) // T juction skipping
+      error = 0;
+      else 
+      error = 103;
+  }
 
 
 void calculate_pid()
@@ -114,17 +88,12 @@ void motor_control()
   left_motor_speed = constrain(left_motor_speed, 90, 200);
   right_motor_speed = constrain(right_motor_speed, 90, 200);
 
-  Serial.print(PI_value);
-  Serial.print("\t");
-  Serial.print(left_motor_speed);
-  Serial.print("\t");
-  Serial.println(right_motor_speed);
+  // Serial.print(PI_value);
+  // Serial.print("\t");
+  // Serial.print(left_motor_speed);
+  // Serial.print("\t");
+  // Serial.println(right_motor_speed);
 
-  // turnLeft(right_motor_speed); // Left Motor Speed
-  // delay(10);
-  // turnRight(left_motor_speed); // Right Motor Speed
   ledcWrite(channel_l2, left_motor_speed);
   ledcWrite(channel_r2, right_motor_speed);
-  // following lines of code are to make the bot move forward
-  // moveForward(255);
 }
