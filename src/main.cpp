@@ -1,69 +1,72 @@
-#include <Arduino.h>
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
+#include <SPI.h>
+#include <Wire.h>
+#include "credentials.h"
 
-// Define pin connections & motor's states
-#define ml_1 27
-#define ml_2 14
-#define mr_1 26
-#define mr_2 25
 
-// Define channels for LEDC functions
-#define channel_l1 0
-#define channel_l2 1
-#define channel_r1 2
-#define channel_r2 3
-
-// Frequency for LEDC function
-#define freq 5000
-
-// Resolution for LEDC function
-#define resolution 8
+const char* ssid = SSID;
+const char* password = Password;
 
 void setup() {
-  // Set the motor control pins to outputs
-  pinMode(ml_1, OUTPUT);
-  pinMode(ml_2, OUTPUT);
-  pinMode(mr_1, OUTPUT);
-  pinMode(mr_2, OUTPUT);
-
-  // Setup LEDC
-  ledcSetup(channel_l1, freq, resolution);
-  ledcSetup(channel_l2, freq, resolution);
-  ledcSetup(channel_r1, freq, resolution);
-  ledcSetup(channel_r2, freq, resolution);
-
-  // Attach the channels to the GPIOs
-  ledcAttachPin(ml_1, channel_l1);
-  ledcAttachPin(ml_2, channel_l2);
-  ledcAttachPin(mr_1, channel_r1);
-  ledcAttachPin(mr_2, channel_r2);
   Serial.begin(115200);
-  Serial.println("Motors Starting");
+  Serial.println("Booting");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
+    Serial.println("Connection Failed! Rebooting...");
+    delay(5000);
+    ESP.restart();
+  }
 
+  // Port defaults to 3232
+  // ArduinoOTA.setPort(3232);
+
+  // Hostname defaults to esp3232-[MAC]
+  ArduinoOTA.setHostname("Esp 32 Cam");
+
+  // No authentication by default
+  // ArduinoOTA.setPassword("admin");
+
+  // Password can be set with it's md5 value as well
+  // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
+  // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
+
+  ArduinoOTA
+    .onStart([]() {
+      String type;
+      if (ArduinoOTA.getCommand() == U_FLASH)
+        type = "sketch";
+      else // U_SPIFFS
+        type = "filesystem";
+
+      // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+      Serial.println("Start updating " + type);
+    })
+    .onEnd([]() {
+      Serial.println("\nEnd");
+    })
+    .onProgress([](unsigned int progress, unsigned int total) {
+      Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+    })
+    .onError([](ota_error_t error) {
+      Serial.printf("Error[%u]: ", error);
+      if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+      else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+      else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+      else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+      else if (error == OTA_END_ERROR) Serial.println("End Failed");
+    });
+
+  ArduinoOTA.begin();
+
+  Serial.println("Ready");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
-  // Full speed forward for 3 seconds
-  Serial.println("Motors FORWARD");
-  // Ramp from 0 to 100% speed forward
-  for (int i = 0; i <= 255; i++) {
-    ledcWrite(channel_l1, 255);
-    ledcWrite(channel_r1, 255);
-    ledcWrite(channel_l2, i);
-    ledcWrite(channel_r2, i);
-    delay(20);
-  }
-
-  delay(3000);
-
-  // Ramp from 100% to 0% speed backward
-  Serial.println("Motors Reverse");
-  for (int i = 255; i >= 0; i--) {
-    ledcWrite(channel_l1, i);
-    ledcWrite(channel_r1, i);
-    ledcWrite(channel_l2, 255);
-    ledcWrite(channel_r2, 255);
-    delay(20);
-  }
-
-  delay(3000);
+  ArduinoOTA.handle();
 }
