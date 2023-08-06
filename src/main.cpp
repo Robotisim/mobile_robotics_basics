@@ -4,6 +4,8 @@
 #include "motor_control.h"
 #include "wifi_communication.h"
 #include "oled_display.h"
+
+
 void setup()
 {
   // Set the motor control pins to outputs
@@ -25,10 +27,50 @@ void setup()
   ledcAttachPin(mr_2, channel_r2);
 
   Serial.begin(115200);
-  Serial.println("Motors Starting");
+  setupOLED();
+  
 
   setupWiFi();
-  setupOLED();
+ 
+ setupOLED();
+}
+void processData(String data)
+{
+  // Convert the received data to lowercase for case-insensitive comparison
+  data.toLowerCase();
+
+  // Display the received command on the OLED display
+  displayCommandOnOLED(data);
+
+  // Process the received data and call the appropriate functions
+  if (data == "forward")
+  {
+    moveForward(currentSpeed); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "backward")
+  {
+    moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "right")
+  {
+    turnRight(); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "left")
+  {
+    turnLeft(); // Set the speed as needed (0 to 255)
+  }
+  else if (data == "stop")
+  {
+    stopMotors();
+  }
+  else if (data == "up")
+  {
+    speedUp();
+  }
+  else if (data == "down")
+  {
+    speedDown();
+  }
 }
 
 void loop()
@@ -42,5 +84,5 @@ void loop()
   // Process the received data
   processData(data);
   handleData(data);
-
+ 
 }

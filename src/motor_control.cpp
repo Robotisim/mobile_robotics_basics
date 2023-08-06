@@ -85,38 +85,4 @@ void speedDown()
   }
 }
 
-void processData(String data)
-{
-  // Convert the received data to lowercase for case-insensitive comparison
-  data.toLowerCase();
 
-  // Process the received data and call the appropriate functions
-  if (data == "forward")
-  {
-    moveForward(currentSpeed); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "backward")
-  {
-    moveBackward(currentSpeed); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "right")
-  {
-    turnRight(); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "left")
-  {
-    turnLeft(); // Set the speed as needed (0 to 255)
-  }
-  else if (data == "stop")
-  {
-    stopMotors();
-  }
-  else if (data == "up")
-  {
-    speedUp();
-  }
-  else if (data == "down")
-  {
-    speedDown();
-  }
-}
