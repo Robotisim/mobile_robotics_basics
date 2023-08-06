@@ -3,7 +3,7 @@
 #include <Wire.h>
 #include "motor_control.h"
 #include "wifi_communication.h"
-
+#include "oled_display.h"
 void setup()
 {
   // Set the motor control pins to outputs
@@ -28,6 +28,7 @@ void setup()
   Serial.println("Motors Starting");
 
   setupWiFi();
+  setupOLED();
 }
 
 void loop()
@@ -41,4 +42,5 @@ void loop()
   // Process the received data
   processData(data);
   handleData(data);
+
 }

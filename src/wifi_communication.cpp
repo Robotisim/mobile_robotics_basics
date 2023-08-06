@@ -1,10 +1,13 @@
 #include "wifi_communication.h"
+#include <WiFi.h>
 
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
 WiFiServer server(80);
 WiFiClient client;
 String data = "";
+
+
 
 void setupWiFi()
 {
