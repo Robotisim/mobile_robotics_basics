@@ -36,13 +36,12 @@ void moveForward(int PWM) {
   ledcWrite(channel_l1, 0);
   ledcWrite(channel_r1, 0);
   ledcWrite(channel_l2, PWM);
-  ledcWrite(channel_r2, 0);
+  ledcWrite(channel_r2, PWM);
 }
 
 void moveBackward(int PWM) {
   ledcWrite(channel_l1, PWM);
-  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_r1, PWM);
   ledcWrite(channel_l2, 0);
   ledcWrite(channel_r2, 0);
 }
-

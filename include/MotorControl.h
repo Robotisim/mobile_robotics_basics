@@ -6,8 +6,8 @@
 // Define pin connections & motor's states
 #define ml_1 27
 #define ml_2 14
-#define mr_1 26
-#define mr_2 25
+#define mr_1 25
+#define mr_2 26
 
 // Define channels for LEDC functions
 #define channel_l1 0

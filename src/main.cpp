@@ -24,8 +24,11 @@ void setup()
 
 void loop()
 {
+
   readEncoderAngle0();
   getEncoderSpeed0();
   readEncoderAngle1();
   getEncoderSpeed1();
+  // moveForward(180);
+  // moveBackward(180);
 }
