@@ -45,3 +45,34 @@ void moveBackward(int PWM) {
   ledcWrite(channel_l2, 0);
   ledcWrite(channel_r2, 0);
 }
+
+
+void motorLeftStop(){
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_l2, 0);
+}
+
+void motorRightStop(){
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_r2, 0);
+}
+
+void moveRightF(int PWM){
+  ledcWrite(channel_r1, 0);
+  ledcWrite(channel_r2, PWM);
+}
+
+void moveLeftF(int PWM){
+  ledcWrite(channel_l1, 0);
+  ledcWrite(channel_l2, PWM);
+}
+
+void moveRightB(int PWM){
+  ledcWrite(channel_r1, PWM);
+  ledcWrite(channel_r2, 0);
+}
+
+void moveLeftB(int PWM){
+  ledcWrite(channel_l1, PWM);
+  ledcWrite(channel_l2, 0);
+}

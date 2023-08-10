@@ -5,11 +5,6 @@
 #include "EncoderControl.h"
 #include "AS5600.h"
 
-unsigned long startTime = 0;
-unsigned long motorDuration = 1000; // 2 seconds for each direction
-
-// Define wheel properties
-const float WHEEL_DIAMETER = 3.28; // in cm (32.8 mm)
 
 void setup()
 {
@@ -19,16 +14,38 @@ void setup()
   setupEncoder0();
   setupEncoder1();
   delay(1000);
-  startTime = millis();
 }
 
 void loop()
 {
 
-  readEncoderAngle0();
-  getEncoderSpeed0();
-  readEncoderAngle1();
-  getEncoderSpeed1();
-  // moveForward(180);
-  // moveBackward(180);
+  // readEncoderAngle0();
+  // getEncoderSpeed0();
+  // readEncoderAngle1();
+  // getEncoderSpeed1();
+
+  if (getEncoderRevolutions0() > -2 )
+  {
+    moveRightF(150);
+  }
+  else
+  {
+    motorRightStop();
+  }
+
+  if (getEncoderRevolutions1() < 2)
+  {
+    moveLeftF(180);
+  }
+  else
+  {
+    motorLeftStop();
+  }
+
+  
+
+
+  //  delay(500);
+
 }
+// }

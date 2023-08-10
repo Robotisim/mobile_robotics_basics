@@ -4,10 +4,10 @@
 #include <Arduino.h>
 
 // Define pin connections & motor's states
-#define ml_1 27
-#define ml_2 14
-#define mr_1 25
-#define mr_2 26
+#define ml_1 14
+#define ml_2 27
+#define mr_1 26
+#define mr_2 25
 
 // Define channels for LEDC functions
 #define channel_l1 0
@@ -26,5 +26,12 @@ void setupMotors();
 void stopMotors();
 void moveForward(int PWM);
 void moveBackward(int PWM);
+void motorLeftStop();
+void motorRightStop();
+void moveRightF(int PWM);
+void moveLeftF(int PWM);
+void moveRightB(int PWM);
+void moveLeftB(int PWM);
+
 
 #endif // MOTOR_CONTROL_H

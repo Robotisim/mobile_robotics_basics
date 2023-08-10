@@ -11,6 +11,10 @@ void readEncoderAngle0();
 void readEncoderAngle1();
 void getEncoderSpeed0();
 void getEncoderSpeed1();
+int getEncoderRevolutions0();
+int getEncoderRevolutions1();
+int resolution_0();
+int resolution_1();
 
 #endif // ENCODER_CONTROL_H
 
