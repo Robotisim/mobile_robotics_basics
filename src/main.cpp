@@ -18,12 +18,6 @@ void setup()
 
 void loop()
 {
-
-  // readEncoderAngle0();
-  // getEncoderSpeed0();
-  // readEncoderAngle1();
-  // getEncoderSpeed1();
-
   if (getEncoderRevolutions0() > -2 )
   {
     moveRightF(150);
@@ -42,10 +36,5 @@ void loop()
     motorLeftStop();
   }
 
-  
-
-
-  //  delay(500);
-
 }
-// }
+
