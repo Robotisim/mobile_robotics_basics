@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 // Define pin connections & motor's states
-#define ml_1 27
-#define ml_2 14
+#define ml_1 14
+#define ml_2 27
 #define mr_1 25
 #define mr_2 26
 
