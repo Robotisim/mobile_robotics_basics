@@ -10,7 +10,6 @@
 const char* ssid = SSID;
 const char* password = Password;
 
-unsigned long previoustime = 0;
 void setup() {
   Serial.begin(115200);
   Serial.println("Booting ESP32");
@@ -70,11 +69,4 @@ void setup() {
 
 void loop() {
   ArduinoOTA.handle();
-  long currenttime = millis();
-  if (currenttime-previoustime >= 5000){
-    previoustime = currenttime;
-    Serial.print("Ip address: ");
-    Serial.println(WiFi.localIP());
-  } 
-
 }
