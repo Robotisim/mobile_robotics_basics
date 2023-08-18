@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 // Declare the external variables
-extern int sensor[3];
+extern int sensor[5];
 extern float error;
 extern int Right_motor_speed;
 extern int Left_motor_speed;

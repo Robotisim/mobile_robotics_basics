@@ -10,6 +10,8 @@
             "includePath": [
                 "/home/ibrahim/mobile_robotics_basics/include",
                 "/home/ibrahim/mobile_robotics_basics/src",
+                "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/ArduinoJson/src",
                 "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/GFX Library for Arduino/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -205,8 +207,6 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/variants/doitESP32devkitV1",
-                "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/AS5600",
-                "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/Unity/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -235,7 +235,6 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 ""
@@ -245,6 +244,8 @@
                 "path": [
                     "/home/ibrahim/mobile_robotics_basics/include",
                     "/home/ibrahim/mobile_robotics_basics/src",
+                    "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                    "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/ArduinoJson/src",
                     "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/GFX Library for Arduino/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -440,8 +441,6 @@
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/variants/doitESP32devkitV1",
-                    "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/AS5600",
-                    "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/Unity/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -470,14 +469,13 @@
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=60109",
+                "PLATFORMIO=60110",
                 "ARDUINO_ESP32_DEV",
                 "HAVE_CONFIG_H",
                 "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",
@@ -493,7 +491,7 @@
                 "ARDUINO=10812",
                 "ARDUINO_VARIANT=\"doitESP32devkitV1\"",
                 "ARDUINO_BOARD=\"DOIT ESP32 DEVKIT V1\"",
-                "ARDUINO_PARTITION_default",
+                "ARDUINO_PARTITION_min_spiffs",
                 ""
             ],
             "cStandard": "gnu99",
