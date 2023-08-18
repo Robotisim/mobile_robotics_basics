@@ -10,9 +10,10 @@
 const char* ssid = SSID;
 const char* password = Password;
 
+unsigned long previoustime = 0;
 void setup() {
   Serial.begin(115200);
-  Serial.println("Booting");
+  Serial.println("Booting ESP32");
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
@@ -25,7 +26,7 @@ void setup() {
   // ArduinoOTA.setPort(3232);
 
   // Hostname defaults to esp3232-[MAC]
-  ArduinoOTA.setHostname("Esp 32 Cam");
+  ArduinoOTA.setHostname("Esp32");
 
   // No authentication by default
   // ArduinoOTA.setPassword("admin");
@@ -69,4 +70,11 @@ void setup() {
 
 void loop() {
   ArduinoOTA.handle();
+  long currenttime = millis();
+  if (currenttime-previoustime >= 5000){
+    previoustime = currenttime;
+    Serial.print("Ip address: ");
+    Serial.println(WiFi.localIP());
+  } 
+
 }

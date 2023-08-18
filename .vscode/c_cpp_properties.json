@@ -14,7 +14,7 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
-                "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32cam/GFX Library for Arduino/src",
+                "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/ESP32/GFX Library for Arduino/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
@@ -247,7 +247,7 @@
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
-                    "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32cam/GFX Library for Arduino/src",
+                    "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/ESP32/GFX Library for Arduino/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
@@ -473,9 +473,8 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60109",
+                "PLATFORMIO=60110",
                 "ARDUINO_ESP32_DEV",
-                "BOARD_HAS_PSRAM",
                 "HAVE_CONFIG_H",
                 "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",
                 "UNITY_INCLUDE_CONFIG_H",
@@ -489,7 +488,7 @@
                 "F_CPU=240000000L",
                 "ARDUINO=10812",
                 "ARDUINO_VARIANT=\"esp32\"",
-                "ARDUINO_BOARD=\"AI Thinker ESP32-CAM\"",
+                "ARDUINO_BOARD=\"Espressif ESP32 Dev Module\"",
                 "ARDUINO_PARTITION_min_spiffs",
                 ""
             ],
@@ -497,7 +496,6 @@
             "cppStandard": "gnu++11",
             "compilerPath": "/home/ibrahim/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-gcc",
             "compilerArgs": [
-                "-mfix-esp32-psram-cache-issue",
                 "-mlongcalls",
                 ""
             ]
