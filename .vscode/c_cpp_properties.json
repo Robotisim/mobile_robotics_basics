@@ -491,7 +491,7 @@
                 "ARDUINO=10812",
                 "ARDUINO_VARIANT=\"doitESP32devkitV1\"",
                 "ARDUINO_BOARD=\"DOIT ESP32 DEVKIT V1\"",
-                "ARDUINO_PARTITION_min_spiffs",
+                "ARDUINO_PARTITION_default",
                 ""
             ],
             "cStandard": "gnu99",
