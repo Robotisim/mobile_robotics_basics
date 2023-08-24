@@ -89,5 +89,5 @@ void handle_u_turn()
         }
         read_sensor_values();
 
-      } while (error != 0);
+      } while (error == 102 || error == 103);
 }

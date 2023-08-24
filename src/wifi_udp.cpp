@@ -5,7 +5,7 @@
 
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
-const char *serverAddress = "192.168.100.17"; // Replace with your server IP or domain
+const char *serverAddress = "192.168.100.9"; // Replace with your server IP or domain
 const int serverPort = 8888;
 
 WiFiUDP udp;
@@ -63,13 +63,31 @@ void send_sensor_values_over_wifi()
   udp.write(packet[3]);
   udp.write(packet[4]);
 
+  dtostrf(sensor[3], 5, 2, packet);
+  udp.write(packet[0]); // uint8_t
+  udp.write(packet[1]);
+  udp.write(packet[2]);
+  udp.write(packet[3]);
+  udp.write(packet[4]);
+
+  dtostrf(sensor[4], 5, 2, packet);
+  udp.write(packet[0]); // uint8_t
+  udp.write(packet[1]);
+  udp.write(packet[2]);
+  udp.write(packet[3]);
+  udp.write(packet[4]);
+
   udp.endPacket();
 
   Serial.print(sensor[0]);
   Serial.print(" / ");
   Serial.print(sensor[1]);
   Serial.print(" / ");
-  Serial.println(sensor[2]);
+  Serial.print(sensor[2]);
+  Serial.print(" / ");
+  Serial.print(sensor[3]);
+  Serial.print(" / ");
+  Serial.println(sensor[4]);
 }
 
 
@@ -81,6 +99,8 @@ void parseUdpMessage()
   int sensorValue0;
   int sensorValue1;
   int sensorValue2;
+  int sensorValue3;
+  int sensorValue4;
   udp.read(packetBuffer, 255);
   stopMotors();
   char *strtokIndx;
@@ -91,16 +111,24 @@ void parseUdpMessage()
   strtokIndx = strtok(NULL, ",");
   sensorValue2 = atof(strtokIndx);
   strtokIndx = strtok(NULL, ",");
+  sensorValue3 = atof(strtokIndx);
+  strtokIndx = strtok(NULL, ",");
+  sensorValue4 = atof(strtokIndx);
+  strtokIndx = strtok(NULL, ",");
   Right_motor_speed = atoi(strtokIndx);
   strtokIndx = strtok(NULL, ",");
   Left_motor_speed = atoi(strtokIndx);
 
-  Serial.print("\n\n\nSensor0 / Sensor1 / Sensor2 =");
+  Serial.print("\n\n\nSensor0 / Sensor1 / Sensor2 / Sensor3 / Sensor4 =");
   Serial.print(sensorValue0);
   Serial.print("/");
   Serial.print(sensorValue1);
   Serial.print("/");
   Serial.print(sensorValue2);
+  Serial.print("/");
+  Serial.print(sensorValue3);
+  Serial.print("/");
+  Serial.print(sensorValue4);
   Serial.print("M_R / M_L ");
   Serial.print(Left_motor_speed);
   Serial.print(" // ");

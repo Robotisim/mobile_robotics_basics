@@ -7,10 +7,10 @@
 
 
 // Define pin connections & motor's states
-#define ml_1 27
-#define ml_2 14
-#define mr_1 26
-#define mr_2 25
+#define ml_1 12
+#define ml_2 13
+#define mr_1 14
+#define mr_2 27
 
 // Define channels for LEDC functions
 #define channel_l1 0

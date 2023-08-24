@@ -8,7 +8,8 @@ extern int sensor[5];
 extern float error;
 extern int Right_motor_speed;
 extern int Left_motor_speed;
-
+extern float P;
+extern float PI_value;
 
 // Function declarations
 void read_sensor_values();
