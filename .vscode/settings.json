@@ -1,3 +1,15 @@
 {
-    "cmake.sourceDirectory": "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/Unity"
+    "cmake.sourceDirectory": "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/Unity",
+    "python.autoComplete.extraPaths": [
+        "/home/ibrahim/ros2_ws/install/py_pkg/lib/python3.10/site-packages",
+        "/home/ibrahim/install/micro_ros_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/ibrahim/ros2_ws/install/py_pkg/lib/python3.10/site-packages",
+        "/home/ibrahim/install/micro_ros_msgs/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
 }
