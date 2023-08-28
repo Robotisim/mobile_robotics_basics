@@ -4,7 +4,7 @@
 #include "MotorControl.h"
 #include "EncoderControl.h"
 #include "AS5600.h"
-
+#include "dead_Reckoning.h"
 
 void setup()
 {
@@ -18,23 +18,11 @@ void setup()
 
 void loop()
 {
-  if (getEncoderRevolutions0() > -2 )
-  {
-    moveRightF(150);
-  }
-  else
-  {
-    motorRightStop();
-  }
-
-  if (getEncoderRevolutions1() < 2)
-  {
-    moveLeftF(180);
-  }
-  else
-  {
-    motorLeftStop();
-  }
-
+  calculate_traveling();
+  Serial.print("X: " );
+  Serial.print(x);
+  Serial.print(" | Y: ");
+  Serial.println(y);
+  delay(1000);
 }
 
