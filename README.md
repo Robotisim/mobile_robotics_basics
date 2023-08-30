@@ -7,7 +7,6 @@ This project implements a robot control system using ESP32. The system includes 
 - ESP32 board
 - AS5600 magnetic encoder
 - Motor drivers (for example, L298N)
-- Wi-Fi module (e.g., ESP32)
 - Wheels with encoders
 - Power supply
 
@@ -37,7 +36,7 @@ This project implements a robot control system using ESP32. The system includes 
 2. Upload the `main.cpp` code to your ESP32 board.
 3. Install the required libraries.
 4. Power on the robot and establish Wi-Fi connections.
-5. Use a Bluetooth terminal app to send commands to control the robot.
+5. Use an app to send commands to control the robot.
 6. The robot's position will be calculated and sent over Wi-Fi to the specified server.
 
 ## Wiring Diagram

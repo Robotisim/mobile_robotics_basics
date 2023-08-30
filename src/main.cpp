@@ -22,7 +22,7 @@ void loop()
   Serial.print("X: " );
   Serial.print(x);
   Serial.print(" | Y: ");
-  Serial.println(y);
-  delay(1000);
+  Serial.print (y);
+  delay(300);
 }
 

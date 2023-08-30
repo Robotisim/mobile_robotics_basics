@@ -59,7 +59,7 @@ int cummulativePos0()
     int cummulative0 = as5600_0.getCumulativePosition();
     //  should be enough up to ~200 RPM
     // int cummulative0 = as5600_0.readAngle();  //right
-    Serial.println(cummulative0);
+    // Serial.println(cummulative0);
     return cummulative0;
   }
 }
@@ -76,7 +76,7 @@ int cummulativePos1()
     int cummulative1 = as5600_1.getCumulativePosition();
     //  should be enough up to ~200 RPM
     // int cummulative1 = as5600_1.readAngle();
-    Serial.println(cummulative1);
+    // Serial.println(cummulative1);
     return cummulative1;
   }
 }

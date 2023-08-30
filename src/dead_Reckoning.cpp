@@ -27,21 +27,21 @@ int count_L = 0;
 
 void calculate_traveling()
 {
-  int cumulativePos0 = cummulativePos0(); // Get encoder values
-  int cumulativePos1 = cummulativePos1();
+  int count_R = cummulativePos0(); // Get encoder values
+  int count_L = cummulativePos1();
 
-  int deltaPos0 = cumulativePos0 - count_R_prev;
-  int deltaPos1 = cumulativePos1 - count_L_prev;
+  int deltaPos0 = count_R - count_R_prev;
+  int deltaPos1 = count_L - count_L_prev;
 
-  count_L_prev = cumulativePos1;
-  count_R_prev = cumulativePos0;
+  count_L_prev = count_L;
+  count_R_prev = count_R;
 
   float disp_l_wheel = deltaPos1 * meter_per_ticks;
   float disp_r_wheel = deltaPos0 * meter_per_ticks;
-  Serial.print("disp_l_wheel : ");
+  Serial.print(" disp_l_wheel : ");
   Serial.print(disp_l_wheel);
   Serial.print(" | disp_r_wheel : ");
-  Serial.println(disp_r_wheel);
+  Serial.print(disp_r_wheel);
   if (deltaPos0 == deltaPos1)
   { // The Straight line condition -> book reference Where am i ?
     x += disp_l_wheel * cos(theta);
@@ -54,16 +54,16 @@ void calculate_traveling()
     x += (disp_body / orientation_angle) * (sin(orientation_angle + theta) - sin(theta));
     y -= (disp_body / orientation_angle) * (cos(orientation_angle + theta) - cos(theta));
     theta += orientation_angle;
-    Serial.print("orientation_angle : ");
+    Serial.print(" OR : ");
     Serial.print(orientation_angle);
     Serial.print(" | theta : ");
-    Serial.println(theta);
+    Serial.print(theta);
     while (theta > PI)
       theta -= (2.0 * PI);
     while (theta < -PI)
       theta += (2.0 * PI);
   }
-  Serial.print("count_L : ");
+  Serial.print(" count_L : ");
   Serial.print(count_L_prev);
   Serial.print(" | count_R : ");
   Serial.println(count_R_prev);
