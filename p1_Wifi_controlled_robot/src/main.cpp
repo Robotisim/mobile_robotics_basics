@@ -12,7 +12,7 @@ Adafruit_SSD1306 display;
 
 void setup() {
   // Initialize Serial
-  Serial.begin(115200);
+  Serial.begin(115200);s
 
   // Motor Setup
   motor_setup();
