@@ -10,6 +10,9 @@
             "includePath": [
                 "/home/ibrahim/mobile_robotics_basics/include",
                 "/home/ibrahim/mobile_robotics_basics/src",
+                "/home/ibrahim/mobile_robotics_basics/lib/Dead Reckoning",
+                "/home/ibrahim/mobile_robotics_basics/lib/Encoder Control",
+                "/home/ibrahim/mobile_robotics_basics/lib/Motor Control",
                 "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/AS5600",
                 "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/SoftWire/src",
                 "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/AsyncDelay/src",
@@ -246,6 +249,9 @@
                 "path": [
                     "/home/ibrahim/mobile_robotics_basics/include",
                     "/home/ibrahim/mobile_robotics_basics/src",
+                    "/home/ibrahim/mobile_robotics_basics/lib/Dead Reckoning",
+                    "/home/ibrahim/mobile_robotics_basics/lib/Encoder Control",
+                    "/home/ibrahim/mobile_robotics_basics/lib/Motor Control",
                     "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/AS5600",
                     "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/SoftWire/src",
                     "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/AsyncDelay/src",
