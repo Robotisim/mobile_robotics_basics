@@ -10,6 +10,8 @@
             "includePath": [
                 "/home/ibrahim/mobile_robotics_basics/include",
                 "/home/ibrahim/mobile_robotics_basics/src",
+                "/home/ibrahim/mobile_robotics_basics/lib/Wifi_data_processing",
+                "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/ibrahim/mobile_robotics_basics/lib/Dead Reckoning",
                 "/home/ibrahim/mobile_robotics_basics/lib/Encoder Control",
                 "/home/ibrahim/mobile_robotics_basics/lib/Motor Control",
@@ -211,7 +213,6 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/variants/doitESP32devkitV1",
-                "/home/ibrahim/mobile_robotics_basics/lib/Wifi_data_processing",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -240,7 +241,6 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 ""
@@ -250,6 +250,8 @@
                 "path": [
                     "/home/ibrahim/mobile_robotics_basics/include",
                     "/home/ibrahim/mobile_robotics_basics/src",
+                    "/home/ibrahim/mobile_robotics_basics/lib/Wifi_data_processing",
+                    "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/ibrahim/mobile_robotics_basics/lib/Dead Reckoning",
                     "/home/ibrahim/mobile_robotics_basics/lib/Encoder Control",
                     "/home/ibrahim/mobile_robotics_basics/lib/Motor Control",
@@ -451,7 +453,6 @@
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/variants/doitESP32devkitV1",
-                    "/home/ibrahim/mobile_robotics_basics/lib/Wifi_data_processing",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -480,7 +481,6 @@
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     ""

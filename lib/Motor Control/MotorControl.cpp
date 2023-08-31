@@ -1,6 +1,7 @@
 #include "MotorControl.h"
 #include <SPI.h>
 #include <Wire.h>
+#include  "wifi_data_processing.h"
 
 void setupMotors() {
   // Set the motor control pins to outputs
@@ -75,4 +76,48 @@ void moveRightB(int PWM){
 void moveLeftB(int PWM){
   ledcWrite(channel_l1, PWM);
   ledcWrite(channel_l2, 0);
+}
+
+void processData(String data)
+{
+  // Convert the received data to lowercase for case-insensitive comparison
+  data.toLowerCase();
+
+  // Check if the data contains a comma (indicating it's a coordinate)
+  int commaIndex = data.indexOf(",");
+  if (commaIndex != -1)
+  {
+    // Process the received coordinate data
+    float xCoordinate = data.substring(0, commaIndex).toFloat();
+    float yCoordinate = data.substring(commaIndex + 1).toFloat();
+    
+    // Call a function to process the coordinates (replace with your actual function)
+    processCoordinates(xCoordinate, yCoordinate);
+  }
+  else
+  {
+    // Process the received string command
+    if (data == "forward")
+    {
+      moveForward(255); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "backward")
+    {
+      moveBackward(255); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "right")
+    {
+      motorRightStop();
+      moveLeftF(255); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "left")
+    {
+      motorLeftStop();
+      moveRightF(255); // Set the speed as needed (0 to 255)
+    }
+    else if (data == "stop")
+    {
+      stopMotors();
+    }
+  }
 }

@@ -25,8 +25,13 @@ void loop()
   // Serial.print(x);
   // Serial.print(" | Y: ");
   // Serial.print (y);
-  processClientRequest();
-  Serial.print(request);
+ client = server.available();
+  if (!client)
+    return;
+
+  data = processClientRequest();
+  Serial.println(data);
+  processData(data);
   delay(300);
 }
 

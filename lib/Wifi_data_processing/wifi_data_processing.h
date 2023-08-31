@@ -8,9 +8,10 @@ extern WiFiClient client;
 extern WiFiServer server;
 extern const char *ssid;
 extern const char *password;
-extern String request;
+extern String data;
 
 void setupWiFi();
-void processClientRequest();
+String processClientRequest();
+void processCoordinates(float x, float y);
 
 #endif

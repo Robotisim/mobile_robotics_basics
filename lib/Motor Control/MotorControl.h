@@ -32,6 +32,7 @@ void moveRightF(int PWM);
 void moveLeftF(int PWM);
 void moveRightB(int PWM);
 void moveLeftB(int PWM);
+void processData(String data);
 
 
 #endif // MOTOR_CONTROL_H

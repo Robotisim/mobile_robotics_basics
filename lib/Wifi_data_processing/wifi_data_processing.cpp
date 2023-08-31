@@ -3,7 +3,7 @@ WiFiClient client;
 WiFiServer server(80);
 const char *ssid = "Jhelum.net [Luqman House]";
 const char *password = "7861234786";
-String request;
+String data = "";
 
 void setupWiFi()
 {
@@ -18,19 +18,31 @@ void setupWiFi()
     Serial.println(WiFi.localIP());
 }
 
-void processClientRequest()
+String processClientRequest(void)
 {
-    client = server.available();
-    if (!client)
-        return;
-
     while (!client.available())
     {
         delay(1);
     }
 
-    request = client.readStringUntil('\r');
+    String request = client.readStringUntil('\r');
     request.remove(0, 5);
     request.remove(request.length() - 9, 9);
 
-    }
+    return request;
+}
+
+void processCoordinates(float x, float y)
+{
+  // Process the received x and y coordinates
+  // Replace this with the actual code to handle the coordinates
+
+  // For example, you can print the coordinates to the Serial Monitor
+  Serial.print("Received Coordinates - X: ");
+  Serial.print(x);
+  Serial.print(" | Y: ");
+  Serial.println(y);
+
+  // You can also perform any other actions or calculations based on the coordinates
+  // For instance, controlling motors, performing calculations, etc.
+}
