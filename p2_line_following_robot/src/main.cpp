@@ -25,7 +25,7 @@ void setup() {
 void loop() {
   readSensors(sensorData);
   error = calculateError(sensorData);
-  auto error_ = error_motor_drive(error);
-  Serial.print(error_.first);Serial.print(" / ");Serial.print(error_.second);Serial.print(" / ");Serial.println(error);
-  displayLineFollowing(display , error_.first,error_.second);
+  auto pwm_values = error_motor_drive(error);
+  Serial.print(pwm_values.first);Serial.print(" / ");Serial.print(pwm_values.second);Serial.print(" / ");Serial.println(error);
+  displayLineFollowing(display , pwm_values.first,pwm_values.second);
 }

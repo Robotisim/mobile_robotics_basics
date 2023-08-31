@@ -4,14 +4,12 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-extern Adafruit_SSD1306 display;
-extern String request;
 
-void drawRightArrow();
-void drawLeftArrow();
-void drawForwardArrow();
-void drawBackwardArrow();
-void drawStopCircle();
+void drawRightArrow(Adafruit_SSD1306 &display);
+void drawLeftArrow(Adafruit_SSD1306 &display);
+void drawForwardArrow(Adafruit_SSD1306 &display);
+void drawBackwardArrow(Adafruit_SSD1306 &display);
+void drawStopCircle(Adafruit_SSD1306 &display);
 
 void setupDisplay(Adafruit_SSD1306 &display);
 void displayLineFollowing(Adafruit_SSD1306 &display,int &lpwm,int &rpwm);
