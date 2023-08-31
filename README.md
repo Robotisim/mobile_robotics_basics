@@ -20,14 +20,26 @@ This project implements a robot control system using ESP32. The system includes 
 ## Code Explanation
 
 - The code calculates the robot's position based on encoder readings and motion equations.
-- Wifi control is provided to drive the robot using predefined commands (`'f'` for forward, `'b'` for reverse, etc.).
+- Wifi control is provided to drive the robot using predefined commands ('f' for forward, 'b' for reverse, etc.).
 - Wi-Fi communication is used to send the robot's position to a server.
 - AS5600 encoder library is used to integrate the AS5600 encoder's built-in functions.
+
+## App Control
+
+- The robot can be controlled remotely using a mobile app.
+- The app sends commands over Wi-Fi to control the robot's movements (forward, reverse, left, right, stop, etc.).
+- The robot's position coordinates (x and y) can also be sent to the app from the ESP32.
+
+## Processing of Coordinates
+
+- The ESP32 receives coordinates (x and y) from the app, which are comma-separated and in string format.
+- The `processCoordinates` function handles the received coordinates.
+- The function processes the coordinates, which can be used for further calculations, motor control, or any other actions.
 
 ## File Structure
 
 - `main.cpp`: Main Arduino code file.
-- `MotorControl.h` , `EncoderControl.h`, `dead_Reckoning.h`: Header file containing variable and function declarations.
+- `MotorControl.h`, `EncoderControl.h`, `dead_Reckoning.h`: Header file containing variable and function declarations.
 - `AS5600.h`, `AS5600.cpp`: AS5600 encoder library files (if required).
 
 ## How to Use
@@ -50,4 +62,3 @@ This project is inspired by [source link](http://www-personal.umich.edu/~johannb
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
