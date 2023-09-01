@@ -20,15 +20,17 @@ void setup()
 
 void loop()
 {
-  // calculate_traveling();
-  // Serial.print("X: " );
-  // Serial.print(x);
-  // Serial.print(" | Y: ");
-  // Serial.print (y);
+  calculate_traveling();
+  Serial.print("X: " );
+  Serial.print(x);
+  Serial.print(" | Y: ");
+  Serial.print (y);
  client = server.available();
   if (!client)
     return;
-
+    
+// Send the current x and y positions over WiFi
+  sendPositionOverWiFi(x, y);
   data = processClientRequest();
   Serial.println(data);
   processData(data);

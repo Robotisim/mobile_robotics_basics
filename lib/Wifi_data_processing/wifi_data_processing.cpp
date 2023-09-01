@@ -1,4 +1,5 @@
 #include "wifi_data_processing.h"
+#include <ESPAsyncWebServer.h>
 WiFiClient client;
 WiFiServer server(80);
 const char *ssid = "Jhelum.net [Luqman House]";
@@ -34,15 +35,40 @@ String processClientRequest(void)
 
 void processCoordinates(float x, float y)
 {
-  // Process the received x and y coordinates
-  // Replace this with the actual code to handle the coordinates
+    // Process the received x and y coordinates
+    // Replace this with the actual code to handle the coordinates
 
-  // For example, you can print the coordinates to the Serial Monitor
-  Serial.print("Received Coordinates - X: ");
-  Serial.print(x);
-  Serial.print(" | Y: ");
-  Serial.println(y);
+    // For example, you can print the coordinates to the Serial Monitor
+    Serial.print("Received Coordinates - X: ");
+    Serial.print(x);
+    Serial.print(" | Y: ");
+    Serial.println(y);
 
-  // You can also perform any other actions or calculations based on the coordinates
-  // For instance, controlling motors, performing calculations, etc.
+    // You can also perform any other actions or calculations based on the coordinates
+    // For instance, controlling motors, performing calculations, etc.
+}
+
+void sendPositionOverWiFi(float x, float y)
+{
+    if (client.connect(WiFi.localIP(), 80))
+    {
+    Serial.println("Connected to server");
+
+    // Create a JSON string to send
+    String dataToSend = String(x) + ","+ String(y);
+    
+    // Send a POST request to the server
+    client.println("POST /data HTTP/1.1");
+    client.println("Host: " + String(WiFi.localIP()));
+    client.println("Content-Type: application/json");
+    client.print("Content-Length: ");
+    client.println(dataToSend.length());
+    client.println();
+    client.println(dataToSend);
+    
+    Serial.println("Data sent to server" + dataToSend);
+    client.stop();
+  } else {
+    Serial.println("Connection to server failed");
+  }
 }

@@ -2,6 +2,7 @@
 #define WIFI_DATA_H
 
 #include <WiFi.h>
+#include <ESPAsyncWebServer.h>
 
 // Global Variables
 extern WiFiClient client;
@@ -13,5 +14,6 @@ extern String data;
 void setupWiFi();
 String processClientRequest();
 void processCoordinates(float x, float y);
+void sendPositionOverWiFi(float x, float y);
 
 #endif
