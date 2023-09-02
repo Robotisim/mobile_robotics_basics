@@ -9,21 +9,24 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <WiFiClientSecure.h>
+#include "EncoderControl.h"
+#include "AS5600.h"
 
 #define CAMERA_MODEL_AI_THINKER
 #include "camera_pins.h"
 
-
 #define WIFI_NETWORK "Jhelum.net [Luqman House]"
 #define WIFI_PASSWORD "7861234786"
 
+const float WHEEL_DIAMETER = 3.28; // in cm (32.8 mm)
 
 void startCameraServer();
 void setupLedFlash(int pin);
 
-void camera_task(void *pvParameters) {
+void camera_task(void *pvParameters)
+{
   camera_config_t config;
-   config.ledc_channel = LEDC_CHANNEL_0;
+  config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
   config.pin_d0 = Y2_GPIO_NUM;
   config.pin_d1 = Y3_GPIO_NUM;
@@ -44,25 +47,31 @@ void camera_task(void *pvParameters) {
   config.xclk_freq_hz = 20000000;
   config.frame_size = FRAMESIZE_UXGA;
   config.pixel_format = PIXFORMAT_JPEG; // for streaming
-  //config.pixel_format = PIXFORMAT_RGB565; // for face detection/recognition
+  // config.pixel_format = PIXFORMAT_RGB565; // for face detection/recognition
   config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
   config.fb_location = CAMERA_FB_IN_PSRAM;
   config.jpeg_quality = 12;
   config.fb_count = 1;
-  
+
   // ... (camera configuration from setup() function)
 
-    if(config.pixel_format == PIXFORMAT_JPEG){
-    if(psramFound()){
+  if (config.pixel_format == PIXFORMAT_JPEG)
+  {
+    if (psramFound())
+    {
       config.jpeg_quality = 10;
       config.fb_count = 2;
       config.grab_mode = CAMERA_GRAB_LATEST;
-    } else {
+    }
+    else
+    {
       // Limit the frame size when PSRAM is not available
       config.frame_size = FRAMESIZE_SVGA;
       config.fb_location = CAMERA_FB_IN_DRAM;
     }
-  } else {
+  }
+  else
+  {
     // Best option for face detection/recognition
     config.frame_size = FRAMESIZE_240X240;
 #if CONFIG_IDF_TARGET_ESP32S3
@@ -77,20 +86,23 @@ void camera_task(void *pvParameters) {
 
   // camera init
   esp_err_t err = esp_camera_init(&config);
-  if (err != ESP_OK) {
+  if (err != ESP_OK)
+  {
     Serial.printf("Camera init failed with error 0x%x", err);
     return;
   }
 
-  sensor_t * s = esp_camera_sensor_get();
+  sensor_t *s = esp_camera_sensor_get();
   // initial sensors are flipped vertically and colors are a bit saturated
-  if (s->id.PID == OV3660_PID) {
-    s->set_vflip(s, 1); // flip it back
-    s->set_brightness(s, 1); // up the brightness just a bit
+  if (s->id.PID == OV3660_PID)
+  {
+    s->set_vflip(s, 1);       // flip it back
+    s->set_brightness(s, 1);  // up the brightness just a bit
     s->set_saturation(s, -2); // lower the saturation
   }
   // drop down frame size for higher initial frame rate
-  if(config.pixel_format == PIXFORMAT_JPEG){
+  if (config.pixel_format == PIXFORMAT_JPEG)
+  {
     s->set_framesize(s, FRAMESIZE_QVGA);
   }
 
@@ -108,24 +120,26 @@ void camera_task(void *pvParameters) {
   setupLedFlash(LED_GPIO_NUM);
 #endif
 
-
   // ... (camera sensor adjustments from setup() function)
 
-  while (1) {
+  while (1)
+  {
     // Do any camera-related tasks here if needed
 
     vTaskDelay(100 / portTICK_PERIOD_MS); // Adjust the delay time as per your requirement
   }
 }
 
-void keepWiFiAlive(void * parameter){
+void keepWiFiAlive(void *parameter)
+{
 
-        WiFi.begin(WIFI_NETWORK, WIFI_PASSWORD);
+  WiFi.begin(WIFI_NETWORK, WIFI_PASSWORD);
 
   WiFi.setSleep(false);
 
-  while (WiFi.status() != WL_CONNECTED) {
-   vTaskDelay(500 / portTICK_PERIOD_MS);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    vTaskDelay(500 / portTICK_PERIOD_MS);
     Serial.print(".");
   }
   Serial.println("");
@@ -139,9 +153,8 @@ void keepWiFiAlive(void * parameter){
   vTaskDelete(NULL); // End the task once Wi-Fi is connected
 }
 
-
-
-void setup() {
+void setup()
+{
 
   // Set the motor control pins to outputs
   pinMode(ml_1, OUTPUT);
@@ -164,30 +177,38 @@ void setup() {
   Serial.begin(115200);
   Serial.setDebugOutput(true);
   Serial.println();
+  Wire.begin();
+  // setupEncoder0();
+  setupEncoder1();
   // Initialize WiFi and camera
   setupWiFi();
 
   xTaskCreatePinnedToCore(camera_task, "camera_task", 4096, NULL, 1, NULL, 1); // Run camera task on core 1
-      xTaskCreatePinnedToCore(
-        keepWiFiAlive,         // Function to run
-        "keepWiFiAliveTask",   // Name of the task
-        4096,                  // Stack size (bytes)
-        NULL,                  // Task parameter
-        1,                     // Task priority (0 to configMAX_PRIORITIES - 1)
-        NULL,                  // Task handle
-        0                      // Run on the first core
-    );
+  xTaskCreatePinnedToCore(
+      keepWiFiAlive,       // Function to run
+      "keepWiFiAliveTask", // Name of the task
+      4096,                // Stack size (bytes)
+      NULL,                // Task parameter
+      1,                   // Task priority (0 to configMAX_PRIORITIES - 1)
+      NULL,                // Task handle
+      0                    // Run on the first core
+  );
 
   // ... (LED flash setup if LED pin is defined in camera_pins.h)
 }
 
-void loop() {
+void loop()
+{
 
-   client = server.available();
+  client = server.available();
   if (!client)
     return;
 
   data = checkClient();
+  // readEncoderAngle0();
+  // getEncoderSpeed0();
+  readEncoderAngle1();
+  getEncoderSpeed1();
   // Process the received data
   // processData(data);
   // handleData(data);

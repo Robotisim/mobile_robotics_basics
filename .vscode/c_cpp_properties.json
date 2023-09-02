@@ -15,6 +15,8 @@
                 "/home/ibrahim/mobile_robotics_basics/lib/Wifi Configuration",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/ibrahim/mobile_robotics_basics/lib/Motor Setup",
+                "/home/ibrahim/mobile_robotics_basics/lib/Encoder Control",
+                "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32cam/AS5600",
                 "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32cam/GFX Library for Arduino/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -251,6 +253,8 @@
                     "/home/ibrahim/mobile_robotics_basics/lib/Wifi Configuration",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/ibrahim/mobile_robotics_basics/lib/Motor Setup",
+                    "/home/ibrahim/mobile_robotics_basics/lib/Encoder Control",
+                    "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32cam/AS5600",
                     "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32cam/GFX Library for Arduino/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -479,7 +483,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60110",
+                "PLATFORMIO=60111",
                 "ARDUINO_ESP32_DEV",
                 "BOARD_HAS_PSRAM",
                 "HAVE_CONFIG_H",
