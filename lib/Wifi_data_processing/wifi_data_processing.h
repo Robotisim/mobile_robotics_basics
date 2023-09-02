@@ -2,7 +2,6 @@
 #define WIFI_DATA_H
 
 #include <WiFi.h>
-#include <ESPAsyncWebServer.h>
 
 // Global Variables
 extern WiFiClient client;
