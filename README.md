@@ -2,7 +2,8 @@
 
 This project involves creating a WiFi-controlled robot using an ESP32 microcontroller. The robot is designed to receive commands from a mobile app and perform various movements like forward, backward, left, right, and stop. It also allows you to control the speed of the robot.
 
-![Robot](robot_image.jpg)
+![Robot](p_1_Wifi_controlled_robot/resources/img.jpeg)
+![App](p_1_Wifi_controlled_robot/resources/app.jpeg)
 
 ## Table of Contents
 - [Components](#components)
