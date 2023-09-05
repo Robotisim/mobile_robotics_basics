@@ -2,6 +2,32 @@
 
 Welcome to the Line-Following Robot project repository! This project involves building an intelligent robot capable of autonomously following lines on the ground using infrared sensors and a PI controller. The robot is powered by an ESP32 microcontroller, and features a custom OLED display for real-time monitoring of key control parameters. This README provides an overview of the project components, setup instructions, and usage guidelines.
 
+## Table of Contents
+
+1. [Project Overview](#project-overview)
+2. [Getting Started](#getting-started)
+   - [Hardware Setup](#hardware-setup)
+   - [Platformio IDE Setup](#Platformio-ide-setup)
+   - [Library Installation](#library-installation)
+   - [Upload Code](#upload-code)
+   - [WiFi Configuration](#wifi-configuration)
+   - [Remote Monitoring](#remote-monitoring)
+3. [Custom Libraries](#custom-libraries)
+4. [Usage](#usage)
+5. [Hardware Used](#hardware-used)
+6. [Software Used](#software-used)
+7. [Logic and Key Code Snippets](#logic-and-key-code-snippets)
+   - [Sensor Reading and Error Calculation](#sensor-reading-and-error-calculation)
+   - [PI Controller Calculation](#pi-controller-calculation)
+   - [Motor Control](#motor-control)
+   - [Sending Sensor Data over WiFi using UDP](#sending-sensor-data-over-wifi-using-udp)
+   - [Custom OLED Display](#custom-oled-display)
+8. [Mathematics Behind the PI Controller](#mathematics-behind-the-pi-controller)
+9. [Conclusion](#conclusion)
+10. [Contributors](#contributors)
+11. [Contact](#contact)
+12. [License](#license)
+
 ## Project Overview
 
 The Line-Following Robot project consists of several components:
@@ -20,45 +46,53 @@ The Line-Following Robot project consists of several components:
 
 To set up the Line-Following Robot project, follow these steps:
 
-1. **Hardware Setup:** Assemble the robot according to the provided schematics. This includes connecting the motors, infrared sensors, and the custom OLED display.
+### Hardware Setup
 
-2. **Arduino IDE Setup:** Install the Arduino IDE if you haven't already, and make sure you have the necessary ESP32 board libraries installed.
+Assemble the robot according to the provided schematics. This includes connecting the motors, infrared sensors, and the custom OLED display.
 
-3. **Library Installation:** The project uses several libraries for OLED display, WiFi communication, and motor control. Install these libraries through the Arduino Library Manager.
+### Platformio IDE Setup
 
-4. **Upload Code:** Use the Arduino IDE to upload the provided code to the ESP32 microcontroller. The code is divided into modules, such as motor control, PI controller, WiFi communication, and OLED display.
+Install the Platformio IDE if you haven't already, and make sure you have the necessary ESP32 board libraries installed.
 
-5. **WiFi Configuration:** Modify the WiFi credentials in the code to match your WiFi network's SSID and password. Also, update the server address and port for UDP communication as needed.
+### Library Installation
 
-6. **Remote Monitoring:** Prepare the receiving device (computer or another microcontroller) to listen for UDP messages from the robot. The robot will send sensor data and control parameters to this device for monitoring.
+The project uses several libraries for OLED display, WiFi communication, and motor control. Install these libraries through the Platformio Library Manager.
 
-7. **Power Up:** Power up the robot and observe its behavior. The robot should follow lines on the ground while continuously adjusting motor speeds to stay centered.
+### Upload Code
 
-## Contents
+Use the Platformio IDE to upload the provided code to the ESP32 microcontroller. The code is divided into modules, such as motor control, PI controller, WiFi communication, and OLED display.
+
+### WiFi Configuration
+
+Modify the WiFi credentials in the code to match your WiFi network's SSID and password. Also, update the server address and port for UDP communication as needed.
+
+### Remote Monitoring
+
+Prepare the receiving device (computer or another microcontroller) to listen for UDP messages from the robot. The robot will send sensor data and control parameters to this device for monitoring.
+
+## Custom Libraries
 
 The repository is organized as follows:
 
-- `arduino_sketch/`: Contains the main Arduino sketch for the robot's ESP32 microcontroller.
+- `main/`: Contains the main Platformio sketch for the robot's ESP32 microcontroller.
 
 - `motor_control/`: Includes code for controlling the robot's motors based on PI controller calculations.
 
-- `pi_controller/`: Contains code related to the implementation of the PI controller for line following.
+- `Proportional Integration/`: Contains code related to the implementation of the PI controller for line following.
 
-- `wifi_udp/`: Includes code for setting up WiFi communication and sending sensor data using the UDP protocol.
+- `Wifi_communication/`: Includes code for setting up WiFi communication and sending sensor data using the UDP protocol.
 
 - `oled_display/`: Contains code for initializing and updating the custom OLED display with control parameters.
 
 ## Usage
 
-1. Upload the code to the ESP32 microcontroller using the Arduino IDE.
+1. Upload the code to the ESP32 microcontroller using the Platformio IDE.
 
 2. Power up the robot and place it on a line. Observe its behavior as it autonomously follows the line using the PI controller.
 
 3. Monitor real-time control parameters on the custom OLED display. This includes error values, PI values, and sensor readings.
 
 4. Set up a receiving device to capture UDP messages sent by the robot. This allows remote monitoring and control of the robot's behavior.
-
-
 
 ## Hardware Used
 
@@ -70,7 +104,7 @@ The repository is organized as follows:
 
 ## Software Used
 
-- **Arduino IDE:** For writing, compiling, and uploading code.
+- **Platformio IDE:** For writing, compiling, and uploading code.
 - **LEDC Library:** Controls motor speed using PWM.
 - **WiFi and WiFiUDP Libraries:** Establishes WiFi connections and sends/receives UDP packets.
 - **U8g2 Library:** Interfaces with the OLED display.
@@ -101,7 +135,6 @@ void calculate_pid() {
   I = constrain(I, -I_limit, I_limit);
   PI_value = (Kp * P) + (Ki * I);
 }
-
 
 ```
 ### Motor Control
@@ -158,15 +191,10 @@ The PI controller is a control algorithm that uses two components: proportional 
 The Line-Following Robot project combines hardware components with software algorithms to create an autonomous robot capable of following lines on the ground. By using infrared sensors, a PI controller, and precise motor control, the robot can navigate its environment while making real-time adjustments to stay on the desired path. The integration of WiFi communication and the custom OLED display adds an extra layer of functionality and interactivity to the project.
 
 
-## Contributing
+## Contributors
 
-Contributions to this project are welcome! If you encounter any bugs, have ideas for improvements, or want to extend the functionality, feel free to open issues and submit pull requests.
-
-## Contact
-
-Connect with me on LinkedIn: [Your LinkedIn Profile](#)
-
-Let's discuss robotics, automation, and IoT!
+- Ibrahim Bin Mansur
+- Muhammad Luqman
 
 ## License
 
