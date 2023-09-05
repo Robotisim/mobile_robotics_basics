@@ -1,32 +1,5 @@
-# Prerequisites
-*.d
+.pio
+.vscode
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-.pio/*
-# Precompiled Headers
-*.gch
-*.pch
+build*
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app

@@ -10,7 +10,11 @@
             "includePath": [
                 "/home/luqman/mobile_robotics_basics/include",
                 "/home/luqman/mobile_robotics_basics/src",
-                "/home/luqman/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/GFX Library for Arduino/src",
+                "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                "/home/luqman/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/U8g2/src",
+                "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
+                "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
+                "/home/luqman/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/ArduinoJson/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/esp_additions/freertos",
@@ -202,8 +206,6 @@
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/variants/doitESP32devkitV1",
-                "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
-                "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -232,7 +234,6 @@
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 ""
@@ -242,7 +243,11 @@
                 "path": [
                     "/home/luqman/mobile_robotics_basics/include",
                     "/home/luqman/mobile_robotics_basics/src",
-                    "/home/luqman/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/GFX Library for Arduino/src",
+                    "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                    "/home/luqman/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/U8g2/src",
+                    "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
+                    "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
+                    "/home/luqman/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/ArduinoJson/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include/esp_additions/freertos",
@@ -434,8 +439,6 @@
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/variants/doitESP32devkitV1",
-                    "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
-                    "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -464,14 +467,13 @@
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "/home/luqman/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=60107",
+                "PLATFORMIO=60110",
                 "ARDUINO_ESP32_DEV",
                 "HAVE_CONFIG_H",
                 "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",
@@ -490,8 +492,8 @@
                 "ARDUINO_PARTITION_default",
                 ""
             ],
-            "cStandard": "c99",
-            "cppStandard": "c++11",
+            "cStandard": "gnu99",
+            "cppStandard": "gnu++11",
             "compilerPath": "/home/luqman/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-gcc",
             "compilerArgs": [
                 "-mlongcalls",
