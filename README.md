@@ -25,8 +25,7 @@ Welcome to the Line-Following Robot project repository! This project involves bu
 8. [Mathematics Behind the PI Controller](#mathematics-behind-the-pi-controller)
 9. [Conclusion](#conclusion)
 10. [Contributors](#contributors)
-11. [Contact](#contact)
-12. [License](#license)
+11. [License](#license)
 
 ## Project Overview
 
@@ -100,7 +99,6 @@ The repository is organized as follows:
 - **Infrared Sensors:** Detects the presence of the line on the ground.
 - **Motors:** Controls the robot's movement.
 - **Custom OLED Display:** Provides real-time feedback.
-- **WiFi Module:** Enables communication with external devices.
 
 ## Software Used
 
