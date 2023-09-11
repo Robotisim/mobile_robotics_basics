@@ -191,7 +191,4 @@ void loop() {
   // Process the received data
   // processData(data);
   // handleData(data);
-
-  // Do nothing in the loop. Everything is done in tasks.
-  // vTaskDelay(10000 / portTICK_PERIOD_MS);
 }
