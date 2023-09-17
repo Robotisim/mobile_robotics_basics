@@ -1,3 +1,8 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
 {
     "configurations": [
         {
@@ -9,6 +14,7 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
+                "/home/ibrahim/mobile_robotics_basics/lib/Credentials",
                 "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/GFX Library for Arduino/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -231,8 +237,7 @@
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
-                "",
-                "${workspaceFolder}/lib"
+                ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
@@ -243,6 +248,7 @@
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
+                    "/home/ibrahim/mobile_robotics_basics/lib/Credentials",
                     "/home/ibrahim/mobile_robotics_basics/.pio/libdeps/esp32doit-devkit-v1/GFX Library for Arduino/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     "/home/ibrahim/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
@@ -469,7 +475,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60110",
+                "PLATFORMIO=60111",
                 "ARDUINO_ESP32_DEV",
                 "HAVE_CONFIG_H",
                 "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",
