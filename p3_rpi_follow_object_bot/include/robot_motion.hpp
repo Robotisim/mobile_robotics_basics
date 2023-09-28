@@ -3,9 +3,9 @@
 
 #include "motor_control.hpp"
 
-class Robot {
+class Robot_motion {
 public:
-    Robot();
+    Robot_motion();
     void moveForward();
     void stop();
     void turnLeft();
